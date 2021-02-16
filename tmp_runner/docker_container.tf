@@ -20,6 +20,10 @@ resource "docker_container" "tmp_runner" {
     volume_name = docker_volume.runner_volume.name
     container_path = "/etc/gitlab-runner"
   }
+  volumes {
+     host_path = "/var/run/docker.sock"
+    container_path = "/var/run/docker.sock"
+  }
 
   network_mode = "host"
 }
