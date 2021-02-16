@@ -21,3 +21,12 @@ $ go install
 ```
 $ pfcli <COMMAND> <ARG>
 ```
+
+
+## Lunch runner :
+
+ you need to lunch runner he will automatically register
+```
+$ cd tmp_runner
+$ terragrunt apply 
+```
