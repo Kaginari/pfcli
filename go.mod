@@ -1,4 +1,4 @@
-module gitlab.com/nt-factory/2021/admin/ntfcli
+module gitlab.com/nt-factory/2021/admin/pfcli
 
 go 1.15
 

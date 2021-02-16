@@ -9,3 +9,15 @@
 ```
 $ go run main.go
 ```
+
+##### Install go binary :
+
+```
+$ go install
+```
+
+##### lunch binary :
+
+```
+$ pfcli <COMMAND> <ARG>
+```

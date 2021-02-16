@@ -1,10 +1,10 @@
 package main
 
 import (
-	"gitlab.com/nt-factory/2021/admin/ntfcli/commands"
+	"gitlab.com/nt-factory/2021/admin/pfcli/cmd"
 )
 
 func main()  {
 
-	commands.Execute()
+	cmd.Execute()
 }
