@@ -1,9 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"gitlab.com/nt-factory/2021/admin/ntfcli/commands"
+)
 
 func main()  {
 
-
-	fmt.Println("hello world !!")
+	commands.Execute()
 }
