@@ -38,7 +38,7 @@ release:
   stage: release
   image:
     name: goreleaser/goreleaser:latest
-    entrypoint: "bin/bash"
+    entrypoint: ["bin/bash"]
   variables:
     GITLAB_TOKEN: "ewK3kecg7tg44Bq-Uwu6"
   script:
