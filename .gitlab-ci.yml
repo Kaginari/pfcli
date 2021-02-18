@@ -42,4 +42,4 @@ release:
   variables:
     GITLAB_TOKEN: "ewK3kecg7tg44Bq-Uwu6"
   script:
-    - release
+    - goreleaser release
