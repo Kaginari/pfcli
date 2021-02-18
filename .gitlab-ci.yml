@@ -24,7 +24,7 @@ before_script:
   ## (change apt-get to yum if you use an RPM-based image)
   ##
   #  - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
-
+  - if [ grep '^ID=' /etc/os-release == "alpine"]; then apk add openssh
   ##
   ## Run ssh-agent (inside the build environment)
   ##
