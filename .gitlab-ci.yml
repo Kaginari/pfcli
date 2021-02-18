@@ -38,8 +38,8 @@ release:
   stage: release
   image:
     name: goreleaser/goreleaser:latest
-    entrypoint: ["/bin/sh"]
+#    entrypoint: ["/bin/sh"]
   variables:
     GITLAB_TOKEN: "ewK3kecg7tg44Bq-Uwu6"
   script:
-    - goreleaser release
+    - release
