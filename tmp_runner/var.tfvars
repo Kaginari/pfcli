@@ -1,3 +1,3 @@
 runner_dsc  = "temporary runner"
-tmp_runner_token = "xcpYLs8jndj1mp_ifsMC"
+tmp_runner_token = "3EqNWUjykz7E7SqTz92j"
 base_image      = "alpine"
