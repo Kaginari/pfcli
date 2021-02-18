@@ -19,6 +19,8 @@ stages:
   - build
   - release
 before_script:
+  - git config --global user.email "bouagina.montassar@gmail.com"
+  - git config --global user.name "ITMonta"
   - mkdir -p /go/src/gitlab.com/nt-factory/2021/admin /go/src/_/builds/nt-factory/2021/admin
   - cp -r $CI_PROJECT_DIR /go/src/gitlab.com/nt-factory/2021/admin/pfcli
   - ln -s /go/src/gitlab.com/nt-factory/2021/admin /go/src/_/builds/nt-factory/2021/admin
