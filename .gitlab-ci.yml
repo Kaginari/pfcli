@@ -74,6 +74,6 @@ release:
   variables:
     GITLAB_TOKEN: "ewK3kecg7tg44Bq-Uwu6"
   script:
-    - git tag -a v0.1.0 -m "First release"
+    - git tag -a v0.1.1 -m "First release"
     - git push origin v0.1.0
     - goreleaser release
