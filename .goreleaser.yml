@@ -1,0 +1,19 @@
+project_name: example
+builds:
+  - env: [CGO_ENABLED=0]
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+nfpms:
+  - maintainer: Montassar Bouajina
+    description: pfcli project.
+    homepage: https://gitlab.com/nt-factory/2021/admin/pfcli
+    license: MIT
+    formats:
+      - deb
+      - rpm
+      - apk
