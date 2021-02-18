@@ -36,7 +36,9 @@ build:
     - go build -i -v
 release:
   stage: release
-  image: goreleaser/goreleaser:latest
+  image:
+    name: goreleaser/goreleaser:latest
+    entrypoint: "bin/bash"
   variables:
     GITLAB_TOKEN: "ewK3kecg7tg44Bq-Uwu6"
   script:
