@@ -25,7 +25,7 @@ before_script:
   ##
   #  - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
   - OS_LINUX=$(grep '^ID=' /etc/os-release)
-  - if [ "$OS_LINUX" == "ID=alpine" ]; then apk add openssh ;
+  - if [ "$OS_LINUX" == "ID=alpine" ]; then apk add openssh ; fi
   ##
   ## Run ssh-agent (inside the build environment)
   ##
