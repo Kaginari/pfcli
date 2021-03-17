@@ -3,10 +3,9 @@ package cmd
 import (
 	"fmt"
 	"github.com/mitchellh/go-homedir"
-	"os"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-
+	"os"
 )
 
 var cfgFile string
@@ -29,7 +28,14 @@ func Execute() {
 		os.Exit(1)
 	}
 }
+func AddCommands() {
 
+
+	// Root Commands
+	rootCmd.AddCommand(NatOneToOneCmd)
+	rootCmd.AddCommand(versionCmd)
+	NatOneToOneAddCommands()
+}
  // init cli configuration
 
 func init() {
@@ -70,3 +76,5 @@ func initConfig() {
 		fmt.Println("Using config file:", viper.ConfigFileUsed())
 	}
 }
+
+
