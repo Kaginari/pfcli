@@ -12,9 +12,9 @@ var firewallRule models.FirewallRule
 
 var CreateCmd = &cobra.Command{
 	Use:   "create",
-	PreRunE: func(cmd *cobra.Command, args []string) error {
-		return functions.CheckRequiredFlags(cmd.Flags())
-	},
+	//PreRunE: func(cmd *cobra.Command, args []string) error {
+	//	return functions.CheckRequiredFlags(cmd.Flags())
+	//},
 	Run: func(cmd *cobra.Command, args []string) {
 		jsonReq, _ := json.Marshal(firewallRule)
 		res := functions.JsonOutput(jsonReq)
@@ -45,20 +45,20 @@ func init()  {
 func createFlags() {
 	pf := CreateCmd.PersistentFlags()
 	pf.StringVarP(&firewallRule.Interface, "interface", "i", "", models.FWRInterfaceDesc)
-	pf.StringVarP(&firewallRule.Type, "type", "t", "", models.FWRTypeDesc)
-	pf.StringVarP(&firewallRule.Protocol, "protocol", "p", "", models.FWRProtocolDesc)
-	pf.StringVar(&firewallRule.IPProtocol, "ipprotocol", "", models.FWRIPProtocolDesc)
-	pf.StringVar(&firewallRule.IMCPType, "icmptype", "", models.FWRIMCPTypeDesc)
-	pf.StringVar(&firewallRule.Source, "src", "", models.FWRSourceDesc)
-	pf.StringVar(&firewallRule.Destination, "dst", "", models.FWRDestinationDesc)
-	pf.IntVar(&firewallRule.SourcePort, "srcport", 0 , models.FWRSourcePortDesc)
-	pf.IntVar(&firewallRule.DestinationPort, "dstport", 0, models.FWRDestinationPortDesc)
-	pf.StringVarP(&firewallRule.Gateway, "gateway","g","", models.FWRGatewayDesc)
-	pf.BoolVar(&firewallRule.Disabled, "gateway",false, models.FWRDisabledDesc)
-	pf.StringVar(&firewallRule.Description, "descr","", models.FWRDescriptionDesc)
-
-	pf.BoolVar(&firewallRule.Log, "log",false, models.FWRLogDesc)
-	pf.BoolVar(&firewallRule.Top, "top",false, models.FWRTopDesc)
-	pf.BoolVar(&firewallRule.Disabled, "apply",true, models.FWRApplyDesc)
+	//pf.StringVarP(&firewallRule.Type, "type", "t", "", models.FWRTypeDesc)
+	//pf.StringVarP(&firewallRule.Protocol, "protocol", "p", "", models.FWRProtocolDesc)
+	//pf.StringVar(&firewallRule.IPProtocol, "ipprotocol", "", models.FWRIPProtocolDesc)
+	//pf.StringVar(&firewallRule.IMCPType, "icmptype", "", models.FWRIMCPTypeDesc)
+	//pf.StringVar(&firewallRule.Source, "src", "", models.FWRSourceDesc)
+	//pf.StringVar(&firewallRule.Destination, "dst", "", models.FWRDestinationDesc)
+	//pf.IntVar(&firewallRule.SourcePort, "srcport", 0 , models.FWRSourcePortDesc)
+	//pf.IntVar(&firewallRule.DestinationPort, "dstport", 0, models.FWRDestinationPortDesc)
+	//pf.StringVarP(&firewallRule.Gateway, "gateway","g","", models.FWRGatewayDesc)
+	//pf.BoolVar(&firewallRule.Disabled, "gateway",false, models.FWRDisabledDesc)
+	//pf.StringVar(&firewallRule.Description, "descr","", models.FWRDescriptionDesc)
+	//
+	//pf.BoolVar(&firewallRule.Log, "log",false, models.FWRLogDesc)
+	//pf.BoolVar(&firewallRule.Top, "top",false, models.FWRTopDesc)
+	//pf.BoolVar(&firewallRule.Disabled, "apply",true, models.FWRApplyDesc)
 
 }
