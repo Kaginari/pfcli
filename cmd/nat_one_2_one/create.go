@@ -2,12 +2,12 @@ package nat_one_2_one
 
 import (
 	"bytes"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"github.com/spf13/cobra"
 	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 	"gitlab.com/nt-factory/2021/admin/pfcli/models"
-	"io/ioutil"
 	"log"
 	"net/http"
 )
@@ -16,25 +16,7 @@ var CreateCmd = &cobra.Command{
 	Use:   "create",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		jsonReq, _ := json.Marshal(natOneToOne)
-		res := functions.JsonOutput(jsonReq)
-		fmt.Println(res)
-
-		//jsonReq, _ := json.Marshal(natOneToOne)
-		fmt.Printf("%s \n" ,jsonReq)
-
-		resp, err := http.Post("pfenseurl", "application/json; charset=utf-8", bytes.NewBuffer(jsonReq))
-		if err != nil {
-			log.Fatalln(err)
-		}
-
-		defer resp.Body.Close()
-		bodyBytes, _ := ioutil.ReadAll(resp.Body)
-
-		// Convert response body to string
-		bodyString := string(bodyBytes)
-		fmt.Println(bodyString)
-
+		CreateNatOneToOne()
 	},
 }
 
@@ -48,7 +30,7 @@ func createFlags()  {
 
 	pf := CreateCmd.PersistentFlags()
 	pf.StringVarP(&natOneToOne.Interface, "interface", "i","",models.NAT121InterfaceDesc )
-	pf.StringVarP(&natOneToOne.Interface, "source", "s","", models.NAT121SourceDesc)
+	pf.StringVarP(&natOneToOne.Source, "source", "s","", models.NAT121SourceDesc)
 	pf.StringVarP(&natOneToOne.Destination, "destination", "d","", models.NAT121DestinationDesc)
 	pf.StringVarP(&natOneToOne.External, "external", "e","", models.NAT121ExternalDesc)
 	pf.StringVarP(&natOneToOne.NatReflection, "nat-reflection", "n","", models.NAT121NatReflectionDesc)
@@ -56,7 +38,7 @@ func createFlags()  {
 	pf.BoolVar(&natOneToOne.Disabled, "disabled", false, models.NAT121DisableDesc)
 	pf.BoolVar(&natOneToOne.NoBinat, "no-binat", false, models.NAT121NoBinatDesc)
 	pf.BoolVarP(&natOneToOne.Top, "top","t", false, models.NAT121TopDesc)
-	pf.BoolVarP(&natOneToOne.Top, "apply","a", false, models.NAT121ApplyDesc)
+	pf.BoolVarP(&natOneToOne.Apply, "apply","a", true, models.NAT121ApplyDesc)
 
 	//err := cobra.MarkFlagRequired(pf, "interface")
 	//if err != nil {
@@ -81,3 +63,27 @@ func createFlags()  {
 	//}
 }
 
+func CreateNatOneToOne()  {
+	jsonReq, _ := json.Marshal(natOneToOne)
+	res := functions.JsonOutput(jsonReq)
+	fmt.Println(res)
+	req, err := http.NewRequest("POST", functions.ViperReadConfig().UrlPfsense+"v1/firewall/nat/one_to_one", bytes.NewBuffer(jsonReq))
+	req.Header.Add("Authorization", functions.ViperReadConfig().ClientId + " "+functions.ViperReadConfig().ClientToken)
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+	resp, err := client.Do(req)
+
+	if err != nil {
+		log.Fatal(err)
+
+	}
+
+	fmt.Println("response Status : ", resp.Status)
+	fmt.Println("response body : ", resp.Body)
+	fmt.Println("response Headers : ", resp.Header)
+}
+
+//cmd
+// pfcli nat_one_to_one create  --description Test_1:1_NAT_entry -d 172.2.5.6 --external 1.2.3.5 --interface WAN --nat-reflection enable --source any

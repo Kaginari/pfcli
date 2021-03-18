@@ -13,40 +13,37 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package firewall_rule
+package nat_one_2_one
 
 import (
-	"bytes"
 	"crypto/tls"
-	"encoding/json"
 	"fmt"
 	"github.com/spf13/cobra"
 	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
-	"gitlab.com/nt-factory/2021/admin/pfcli/models"
 	"log"
 	"net/http"
 )
 
-// DeleteCmd represents the delete command
-var DeleteCmd = &cobra.Command{
-	Use:   "delete",
+// listCmd represents the list command
+var ListCmd = &cobra.Command{
+	Use:   "list",
+	Short: "A brief description of your command",
+	Long: `A longer description that spans multiple lines and likely contains examples
+and usage of using your command. For example:
+
+Cobra is a CLI library for Go that empowers applications.
+This application is a tool to generate the needed files
+to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		DeletRule()
+		NatList()
 	},
 }
 
-
-var DeleteModel models.DeleteFirewallRule
 func init() {
-	pf := DeleteCmd.PersistentFlags()
-	pf.StringVarP(&DeleteModel.Tracker, "tracker", "t", "", "Specify the rule tracker ID to delete")
-	pf.BoolVar(&DeleteModel.Apply, "apply",true, models.FWRApplyDesc)
+
 }
-func DeletRule()  {
-	jsonReq, _ := json.Marshal(DeleteModel)
-	res := functions.JsonOutput(jsonReq)
-	fmt.Println(res)
-	req, err := http.NewRequest("DELETE", functions.ViperReadConfig().UrlPfsense+"v1/firewall/rule", bytes.NewBuffer(jsonReq))
+func NatList()  {
+	req, err := http.NewRequest("GET", functions.ViperReadConfig().UrlPfsense+"v1/firewall/nat/one_to_one", nil)
 	req.Header.Add("Authorization", functions.ViperReadConfig().ClientId + " "+functions.ViperReadConfig().ClientToken)
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
@@ -60,10 +57,9 @@ func DeletRule()  {
 
 	}
 
-	fmt.Println("response Status : ", resp.Status)
-	jsonReq2, _ := json.Marshal(resp.Body)
-	res2 := functions.JsonOutput(jsonReq2)
-	fmt.Println(res2)
-	fmt.Println("response Headers : ", resp.Header)
 
+
+	fmt.Println("response Status : ", resp.Status)
+	fmt.Println("response Body : ", resp.Body)
+	fmt.Println("response Headers : ", resp.Header)
 }
