@@ -10,7 +10,12 @@ You may obtain a copy of the License at
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
+See the License for the specific langu	Long: `A longer description that spans multiple lines and likely contains examples
+and usage of using your command. For example:
+
+Cobra is a CLI library for Go that empowers applications.
+This application is a tool to generate the needed files
+to quickly create a Cobra application.`,age governing permissions and
 limitations under the License.
 */
 package cmd
@@ -18,8 +23,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
-	"gitlab.com/nt-factory/2021/admin/pfcli/models"
+	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 )
 
 
@@ -28,7 +32,7 @@ var configCmd = &cobra.Command{
 	Short: "return the config from the file $ HOME / .pfcli.yaml.",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		ViperReadConfig()
+		fmt.Println(functions.ViperReadConfig())
 
 	},
 }
@@ -37,20 +41,4 @@ func init() {
 	rootCmd.AddCommand(configCmd)
 }
 
-func ViperReadConfig() models.Config  {
-	var config models.Config
-	viper.SetConfigName("pfcli")
-	viper.SetConfigType("yaml")
-	err := viper.ReadInConfig()
-	if err != nil { // Handle errors reading the config file
-		panic(fmt.Errorf("Fatal error config file: %s \n", err))
-	}
-	url_pfsense := fmt.Sprintf("%v", viper.Get("url-pfsense"))
-	config.UrlPfsense= url_pfsense
-	client_id := fmt.Sprintf("%v", viper.Get("client-id"))
-	config.ClientId= client_id
-	client_token := fmt.Sprintf("%v", viper.Get("client-token"))
-	config.ClientToken=client_token
-	fmt.Println(config)
-	return config
-}
+

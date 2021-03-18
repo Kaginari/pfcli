@@ -31,5 +31,8 @@ func init() {
 }
 func FirewallRuleAddCommands()  {
 	FirewallRuleCmd.AddCommand(firewall_rule.CreateCmd)
+	FirewallRuleCmd.AddCommand(firewall_rule.DeleteCmd)
+	FirewallRuleCmd.AddCommand(firewall_rule.ListCmd)
+
 
 }
