@@ -62,4 +62,5 @@ func NatList()  {
 	fmt.Println("response Status : ", resp.Status)
 	fmt.Println("response Body : ", resp.Body)
 	fmt.Println("response Headers : ", resp.Header)
+
 }
