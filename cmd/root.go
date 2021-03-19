@@ -36,8 +36,13 @@ func AddCommands() {
 	rootCmd.AddCommand(versionCmd)
 	rootCmd.AddCommand(NatOneToOneCmd)
 	NatOneToOneAddCommands()
+
 	rootCmd.AddCommand(FirewallRuleCmd)
 	FirewallRuleAddCommands()
+
+	rootCmd.AddCommand(VirtualIpsCmd)
+	VirtualIpsAddCommands()
+
 }
  // init cli configuration
 
