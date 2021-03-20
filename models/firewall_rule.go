@@ -10,7 +10,7 @@ type FirewallRule struct {
  Destination string  		`json:"dst"`
  SourcePort int  			`json:"srcport"`
  DestinationPort  int	 	`json:"dstport"`
- Gateway  string 			`json:"gateway"`
+ //Gateway  string 			`json:"gateway"`
  Disabled  bool 			`json:"disabled"`
  Description string  		`json:"descr"`
  Log bool  					`json:"log"`
@@ -18,7 +18,10 @@ type FirewallRule struct {
  Apply bool  				`json:"apply"`
 
 }
-
+type DeleteFirewallRule struct {
+	Tracker string `json:"tracker"`
+	Apply bool `json:"apply"`
+}
 
 var FWRTypeDesc = 		"Set a firewall rule type (pass, block, reject) \n"
 
