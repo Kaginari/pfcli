@@ -18,5 +18,7 @@ func init() {
 
 func NatOneToOneAddCommands()  {
 	NatOneToOneCmd.AddCommand(nat_one_2_one.CreateCmd)
+	NatOneToOneCmd.AddCommand(nat_one_2_one.DeleteCmd)
+	NatOneToOneCmd.AddCommand(nat_one_2_one.ListCmd)
 
 }

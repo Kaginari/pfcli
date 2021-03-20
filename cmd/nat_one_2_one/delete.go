@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package firewall_rule
+package nat_one_2_one
 
 import (
 	"bytes"
@@ -27,26 +27,25 @@ import (
 	"net/http"
 )
 
-// DeleteCmd represents the delete command
+// deleteCmd represents the delete command
 var DeleteCmd = &cobra.Command{
 	Use:   "delete",
 	Run: func(cmd *cobra.Command, args []string) {
-		DeletRule()
+		DeleteNat()
 	},
 }
 
-
-var DeleteModel models.DeleteFirewallRule
 func init() {
 	pf := DeleteCmd.PersistentFlags()
-	pf.StringVarP(&DeleteModel.Tracker, "tracker", "t", "", "Specify the rule tracker ID to delete")
-	pf.BoolVar(&DeleteModel.Apply, "apply",true, models.FWRApplyDesc)
+	pf.StringVarP(&DeleteModel.Id, "id", "i", "", "Specify the rule tracker ID to delete")
+	pf.BoolVar(&DeleteModel.Apply, "apply",true, models.NAT121ApplyDesc)
 }
-func DeletRule()  {
+var DeleteModel models.DeleteNatOneToOne
+func DeleteNat()  {
 	jsonReq, _ := json.Marshal(DeleteModel)
 	res := functions.JsonOutput(jsonReq)
 	fmt.Println(res)
-	req, err := http.NewRequest("DELETE", functions.ViperReadConfig().UrlPfsense+"v1/firewall/rule", bytes.NewBuffer(jsonReq))
+	req, err := http.NewRequest("DELETE", functions.ViperReadConfig().UrlPfsense+"v1/firewall/nat/one_to_one", bytes.NewBuffer(jsonReq))
 	req.Header.Add("Authorization", functions.ViperReadConfig().ClientId + " "+functions.ViperReadConfig().ClientToken)
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
@@ -57,13 +56,9 @@ func DeletRule()  {
 	if err != nil {
 		log.Fatal(err)
 
-
 	}
 
 	fmt.Println("response Status : ", resp.Status)
-	jsonReq2, _ := json.Marshal(resp.Body)
-	res2 := functions.JsonOutput(jsonReq2)
-	fmt.Println(res2)
+	fmt.Println("response body : ", resp.Body)
 	fmt.Println("response Headers : ", resp.Header)
-
 }

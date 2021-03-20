@@ -84,3 +84,6 @@ func AddRule()  {
 	fmt.Println("response Status : ", resp.Body)
 	fmt.Println("response Headers : ", resp.Header)
 }
+
+////cmd
+////pfcli firewallRule create --descr test_pfcli --dst 172.12.25.18 --dstport 443  --icmptype kgndfjk  --interface wan  --protocol tcp/udp --src 172.16.209.138 --type block --ipprotocol inet --srcport 443 --top

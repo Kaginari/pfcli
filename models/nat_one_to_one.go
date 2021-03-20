@@ -13,7 +13,10 @@ type NatOneToOne struct {
 	Top bool 				`json:"top"`
 	Apply bool 				`json:"apply"`
 }
-
+type DeleteNatOneToOne struct {
+	Id string `json:"id"`
+	Apply bool `json:"apply"`
+}
 var NAT121InterfaceDesc  =
  	"Set which interface the mapping will apply to. \n" +
 	"You may specify either the interface's descriptive name, \n" +
