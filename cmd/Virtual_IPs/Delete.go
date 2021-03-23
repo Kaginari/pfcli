@@ -16,47 +16,20 @@ limitations under the License.
 package Virtual_IPs
 
 import (
-	"bytes"
-	"crypto/tls"
-	"encoding/json"
-	"fmt"
 	"github.com/spf13/cobra"
-	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 	"gitlab.com/nt-factory/2021/admin/pfcli/models"
-	"log"
-	"net/http"
+	"gitlab.com/nt-factory/2021/admin/pfcli/services"
 )
 
 // DeleteCmd represents the Delete command
 var DeleteCmd = &cobra.Command{
 	Use:   "delete",
 	Run: func(cmd *cobra.Command, args []string) {
-		DeleteNat()
+		services.DeleteVirtual_IPS(model)
 	},
 }
 var model models.DeleteVirtualIPS
 func init() {
 	pf := DeleteCmd.PersistentFlags()
 	pf.StringVarP(&model.Id, "id", "i", "", "Specify the virtual IP ID to delete\n")
-}
-func DeleteNat()  {
-	jsonReq, _ := json.Marshal(model)
-	res := functions.JsonOutput(jsonReq)
-	fmt.Println(res)
-	req, err := http.NewRequest("DELETE", functions.ViperReadConfig().Host+"v1/firewall/virtual_ip", bytes.NewBuffer(jsonReq))
-	req.Header.Add("Authorization", functions.ViperReadConfig().ClientId + " "+functions.ViperReadConfig().ClientToken)
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-	client := &http.Client{Transport: tr}
-	resp, err := client.Do(req)
-
-	if err != nil {
-		log.Fatal(err)
-
-	}
-
-	fmt.Println("response Status : ", resp.Status)
-	fmt.Println("response body : ", resp.Body)
-	fmt.Println("response Headers : ", resp.Header)
 }

@@ -16,22 +16,16 @@ limitations under the License.
 package Virtual_IPs
 
 import (
-	"bytes"
-	"crypto/tls"
-	"encoding/json"
-	"fmt"
 	"github.com/spf13/cobra"
-	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 	"gitlab.com/nt-factory/2021/admin/pfcli/models"
-	"log"
-	"net/http"
+	"gitlab.com/nt-factory/2021/admin/pfcli/services"
 )
 
 // createCmd represents the create command
 var CreateCmd = &cobra.Command{
 	Use:   "create",
 	Run: func(cmd *cobra.Command, args []string) {
-		createVirtualIPS()
+		services.CreateVirtualIPS(VirtualIPS)
 	},
 }
 
@@ -52,25 +46,5 @@ func createFlags()  {
 	pf.StringVar(&VirtualIPS.Advskew, "advskew","",models.VertualIPS_Advskew_Desc )
 	pf.StringVarP(&VirtualIPS.Password, "password", "p","",models.VertualIPS_Password_Desc )
 }
-func createVirtualIPS()  {
-	jsonReq, _ := json.Marshal(VirtualIPS)
-	res := functions.JsonOutput(jsonReq)
-	fmt.Println(res)
-	req, err := http.NewRequest("POST", functions.ViperReadConfig().Host+"v1/firewall/virtual_ip", bytes.NewBuffer(jsonReq))
-	req.Header.Add("Authorization", functions.ViperReadConfig().ClientId + " "+functions.ViperReadConfig().ClientToken)
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-	client := &http.Client{Transport: tr}
-	resp, err := client.Do(req)
 
-	if err != nil {
-		log.Fatal(err)
-
-	}
-
-	fmt.Println("response Status : ", resp.Status)
-	fmt.Println("response body : ", resp.Body)
-	fmt.Println("response Headers : ", resp.Header)
-}
 //pfcli virtualIps create --mode ipalias --interface 172.16.77.239 --subnet 172.16.77.239/32 --password testpass --descr This_is_a_virtual_IP_added_via_pfSense_API

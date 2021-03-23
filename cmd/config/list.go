@@ -18,14 +18,14 @@ package config
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
+	"gitlab.com/nt-factory/2021/admin/pfcli/services"
 )
 
 // listCmd represents the list command
 var ListCmd = &cobra.Command{
 	Use:   "list",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(functions.ViperReadConfig())
+		fmt.Println(services.ViperReadConfig())
 	},
 }
 

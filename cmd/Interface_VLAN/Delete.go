@@ -16,15 +16,9 @@ limitations under the License.
 package Interface_VLAN
 
 import (
-	"bytes"
-	"crypto/tls"
-	"encoding/json"
-	"fmt"
 	"github.com/spf13/cobra"
-	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 	"gitlab.com/nt-factory/2021/admin/pfcli/models"
-	"log"
-	"net/http"
+	"gitlab.com/nt-factory/2021/admin/pfcli/services"
 )
 
 // DeleteCmd represents the Delete command
@@ -32,7 +26,7 @@ var DeleteCmd = &cobra.Command{
 	Use:   "delete",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		DeleteVlan()
+		services.DeleteVlan(DeleteInetrfaceVLAN)
 	},
 }
 var DeleteInetrfaceVLAN models.DeleteIVlan
@@ -41,26 +35,5 @@ func init() {
 	pf.StringVarP(&DeleteInetrfaceVLAN.Vlanif, "vlanif", "v", "", models.IvlanVlanifDesc)
 	pf.StringVarP(&DeleteInetrfaceVLAN.Id, "id", "i", "", models.IvlanIdfDesc)
 }
-func DeleteVlan(){
-	jsonReq, _ := json.Marshal(DeleteInetrfaceVLAN)
-	res := functions.JsonOutput(jsonReq)
-	fmt.Println(res)
-	req, err := http.NewRequest("DELETE", functions.ViperReadConfig().Host+"v1/interface/vlan", bytes.NewBuffer(jsonReq))
-	req.Header.Add("Authorization", functions.ViperReadConfig().ClientId + " "+functions.ViperReadConfig().ClientToken)
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-	client := &http.Client{Transport: tr}
-	resp, err := client.Do(req)
 
-	if err != nil {
-		log.Fatal(err)
-
-
-	}
-
-	fmt.Println("response Status : ", resp.Status)
-	fmt.Println("response Headers : ", resp.Header)
-
-}
 //pfcli InterfaceVLAN delete --vlanif vmp1

@@ -18,8 +18,8 @@ package config
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 	"gitlab.com/nt-factory/2021/admin/pfcli/models"
+	"gitlab.com/nt-factory/2021/admin/pfcli/services"
 )
 
 // addCmd represents the add command
@@ -27,9 +27,9 @@ var SetCmd = &cobra.Command{
 	Use:   "set",
 	Run: func(cmd *cobra.Command, args []string) {
 		list :=[]string{configmodel.Host,configmodel.ClientId,configmodel.ClientToken}
-		functions.ViperAddConfig(list)
+		services.ViperAddConfig(list)
 
-		fmt.Println(functions.ViperReadConfig())
+		fmt.Println(services.ViperReadConfig())
 	},
 }
 

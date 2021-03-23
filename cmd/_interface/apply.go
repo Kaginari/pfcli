@@ -16,12 +16,8 @@ limitations under the License.
 package _interface
 
 import (
-	"crypto/tls"
-	"fmt"
 	"github.com/spf13/cobra"
-	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
-	"log"
-	"net/http"
+	"gitlab.com/nt-factory/2021/admin/pfcli/services"
 )
 
 // applyCmd represents the apply command
@@ -30,27 +26,10 @@ var ApplyCmd = &cobra.Command{
 	Short: "Apply pending interface updates. This will apply the current configuration for each interface. This endpoint returns no data.",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		applayInterface()
+		services.ApplayInterface()
 	},
 }
 
 func init() {
 }
-func applayInterface()  {
-	req, err := http.NewRequest("POST", functions.ViperReadConfig().Host+"v1/interface/apply", nil)
-	req.Header.Add("Authorization", functions.ViperReadConfig().ClientId + " "+functions.ViperReadConfig().ClientToken)
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-	client := &http.Client{Transport: tr}
-	resp, err := client.Do(req)
 
-	if err != nil {
-		log.Fatal(err)
-
-	}
-
-	fmt.Println("response Status : ", resp.Status)
-	fmt.Println("response body : ", resp.Body)
-	fmt.Println("response Headers : ", resp.Header)
-}

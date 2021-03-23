@@ -1,15 +1,9 @@
 package firewall_rule
 
 import (
-	"bytes"
-	"crypto/tls"
-	"encoding/json"
-	"fmt"
 	"github.com/spf13/cobra"
-	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 	"gitlab.com/nt-factory/2021/admin/pfcli/models"
-	"log"
-	"net/http"
+	"gitlab.com/nt-factory/2021/admin/pfcli/services"
 )
 
 var firewallRule models.FirewallRule
@@ -20,7 +14,7 @@ var CreateCmd = &cobra.Command{
 	//	return functions.CheckRequiredFlags(cmd.Flags())
 	//},
 	Run: func(cmd *cobra.Command, args []string) {
-		AddRule()
+		services.AddRule(firewallRule)
 
 		//jsonReq, _ := json.Marshal(natOneToOne)
 		//fmt.Printf("%s \n" ,jsonReq)
@@ -64,27 +58,7 @@ func createFlags() {
 	pf.BoolVar(&firewallRule.Disabled, "apply",true, models.FWRApplyDesc)
 
 }
-func AddRule()  {
-	jsonReq, _ := json.Marshal(firewallRule)
-	res := functions.JsonOutput(jsonReq)
-	fmt.Println(res)
-	req, err := http.NewRequest("POST", functions.ViperReadConfig().Host+"v1/firewall/rule", bytes.NewBuffer(jsonReq))
-	req.Header.Add("Authorization", functions.ViperReadConfig().ClientId + " "+functions.ViperReadConfig().ClientToken)
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-	client := &http.Client{Transport: tr}
-	resp, err := client.Do(req)
 
-	if err != nil {
-		log.Fatal(err)
-
-	}
-
-	fmt.Println("response Status : ", resp.Status)
-	fmt.Println("response body : ", resp.Body)
-	fmt.Println("response Headers : ", resp.Header)
-}
 
 ////cmd
 ////pfcli firewallRule create --descr test_pfcli --dst 172.12.25.18 --dstport 443  --icmptype kgndfjk  --interface wan  --protocol tcp/udp --src 172.16.209.138 --type block --ipprotocol inet --srcport 443 --top
