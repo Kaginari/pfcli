@@ -68,7 +68,7 @@ func AddRule()  {
 	jsonReq, _ := json.Marshal(firewallRule)
 	res := functions.JsonOutput(jsonReq)
 	fmt.Println(res)
-	req, err := http.NewRequest("POST", functions.ViperReadConfig().UrlPfsense+"v1/firewall/rule", bytes.NewBuffer(jsonReq))
+	req, err := http.NewRequest("POST", functions.ViperReadConfig().Host+"v1/firewall/rule", bytes.NewBuffer(jsonReq))
 	req.Header.Add("Authorization", functions.ViperReadConfig().ClientId + " "+functions.ViperReadConfig().ClientToken)
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},

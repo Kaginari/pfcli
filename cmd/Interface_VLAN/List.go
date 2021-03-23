@@ -35,7 +35,7 @@ var ListCmd = &cobra.Command{
 func init() {
 }
 func VlanList()  {
-	req, err := http.NewRequest("GET", functions.ViperReadConfig().UrlPfsense+"v1/interface/vlan", nil)
+	req, err := http.NewRequest("GET", functions.ViperReadConfig().Host+"v1/interface/vlan", nil)
 	req.Header.Add("Authorization", functions.ViperReadConfig().ClientId + " "+functions.ViperReadConfig().ClientToken)
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},

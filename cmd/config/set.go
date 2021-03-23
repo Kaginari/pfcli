@@ -13,48 +13,33 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package Virtual_IPs
+package config
 
 import (
-	"crypto/tls"
 	"fmt"
 	"github.com/spf13/cobra"
 	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
-	"log"
-	"net/http"
+	"gitlab.com/nt-factory/2021/admin/pfcli/models"
 )
 
-// listCmd represents the list command
-var ListCmd = &cobra.Command{
-	Use:   "list",
-
+// addCmd represents the add command
+var SetCmd = &cobra.Command{
+	Use:   "set",
 	Run: func(cmd *cobra.Command, args []string) {
-		VrirtualIPSList()
+		list :=[]string{configmodel.Host,configmodel.ClientId,configmodel.ClientToken}
+		functions.ViperAddConfig(list)
+
+		fmt.Println(functions.ViperReadConfig())
 	},
 }
 
 func init() {
+	createFlag()
 }
-func VrirtualIPSList()  {
-	req, err := http.NewRequest("GET", functions.ViperReadConfig().Host+"v1/firewall/virtual_ip", nil)
-	req.Header.Add("Authorization", functions.ViperReadConfig().ClientId + " "+functions.ViperReadConfig().ClientToken)
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-	client := &http.Client{Transport: tr}
-	resp, err := client.Do(req)
-
-	if err != nil {
-		log.Fatal(err)
-
-
-
-	}
-
-
-
-	fmt.Println("response Status : ", resp.Status)
-	fmt.Println("response Body : ", resp.Body)
-	fmt.Println("response Headers : ", resp.Header)
-
+var configmodel models.Config
+func createFlag() {
+	pf := SetCmd.PersistentFlags()
+	pf.StringVar(&configmodel.Host, "host",  "", models.Hoet_descr)
+	pf.StringVar(&configmodel.ClientId, "client_id",  "", models.Client_id_descr)
+	pf.StringVar(&configmodel.ClientToken, "client_token",  "", models.Client_token_descr)
 }
