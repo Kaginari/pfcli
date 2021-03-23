@@ -4,10 +4,19 @@ import (
 	"fmt"
 	"github.com/spf13/viper"
 	"gitlab.com/nt-factory/2021/admin/pfcli/models"
+	"os"
 )
 
 func ViperReadConfig() models.Config  {
 	var config models.Config
+
+	config.Host= os.Getenv("PFCLI_HOST")
+	config.ClientId= os.Getenv("PFCLI_CLIENT")
+	config.ClientToken= os.Getenv("PFCLI_SECRET")
+	if (config.Host!="" && config.ClientId!="" && config.ClientToken!=""){
+		fmt.Println("this is from env variable")
+		return config
+	}else {
 	err := viper.ReadInConfig()
 	if err != nil { // Handle errors reading the config file
 		panic(fmt.Errorf("Fatal error config file: %s \n", err))
@@ -18,7 +27,9 @@ func ViperReadConfig() models.Config  {
 	config.ClientId= client_id
 	client_token := fmt.Sprintf("%v", viper.Get("client-token"))
 	config.ClientToken=client_token
+		fmt.Println("this is from copnfg.yaml")
 	return config
+	}
 }
 func ViperAddConfig(args []string)  {
 	if args[0]==""{args[0]=fmt.Sprintf("%v", viper.Get("host"))}
@@ -31,3 +42,4 @@ func ViperAddConfig(args []string)  {
 	viper.WriteConfig()
 
 }
+//pfcli config set --host https://51.77.239.61/api/ --client_id 6170695f75736572 --client_token 231364d73da34275d32c9c79ea69f80c
