@@ -37,7 +37,7 @@ var ApplyCmd = &cobra.Command{
 func init() {
 }
 func applayInterface()  {
-	req, err := http.NewRequest("POST", functions.ViperReadConfig().UrlPfsense+"v1/interface/apply", nil)
+	req, err := http.NewRequest("POST", functions.ViperReadConfig().Host+"v1/interface/apply", nil)
 	req.Header.Add("Authorization", functions.ViperReadConfig().ClientId + " "+functions.ViperReadConfig().ClientToken)
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},

@@ -43,7 +43,7 @@ func init() {
 
 }
 func NatList()  {
-	req, err := http.NewRequest("GET", functions.ViperReadConfig().UrlPfsense+"v1/firewall/nat/one_to_one", nil)
+	req, err := http.NewRequest("GET", functions.ViperReadConfig().Host+"v1/firewall/nat/one_to_one", nil)
 	req.Header.Add("Authorization", functions.ViperReadConfig().ClientId + " "+functions.ViperReadConfig().ClientToken)
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},

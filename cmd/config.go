@@ -23,22 +23,23 @@ package cmd
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
+	"gitlab.com/nt-factory/2021/admin/pfcli/cmd/config"
 )
 
 
-var configCmd = &cobra.Command{
-	Use:   "config-list",
+var ConfigCmd = &cobra.Command{
+	Use:   "config",
 	Short: "return the config from the file $ HOME / .pfcli.yaml.",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(functions.ViperReadConfig())
-
+		fmt.Println("config called")
 	},
 }
-
 func init() {
-	rootCmd.AddCommand(configCmd)
-}
 
+}
+func ConfigAddCommande()  {
+	ConfigCmd.AddCommand(config.ListCmd)
+	ConfigCmd.AddCommand(config.SetCmd)
+}
 

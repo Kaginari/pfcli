@@ -56,7 +56,7 @@ func createVirtualIPS()  {
 	jsonReq, _ := json.Marshal(VirtualIPS)
 	res := functions.JsonOutput(jsonReq)
 	fmt.Println(res)
-	req, err := http.NewRequest("POST", functions.ViperReadConfig().UrlPfsense+"v1/firewall/virtual_ip", bytes.NewBuffer(jsonReq))
+	req, err := http.NewRequest("POST", functions.ViperReadConfig().Host+"v1/firewall/virtual_ip", bytes.NewBuffer(jsonReq))
 	req.Header.Add("Authorization", functions.ViperReadConfig().ClientId + " "+functions.ViperReadConfig().ClientToken)
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},

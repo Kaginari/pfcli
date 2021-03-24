@@ -36,7 +36,7 @@ func init() {
 
 }
 func RuleList()  {
-	req, err := http.NewRequest("GET", functions.ViperReadConfig().UrlPfsense+"v1/firewall/rule", nil)
+	req, err := http.NewRequest("GET", functions.ViperReadConfig().Host+"v1/firewall/rule", nil)
 	req.Header.Add("Authorization", functions.ViperReadConfig().ClientId + " "+functions.ViperReadConfig().ClientToken)
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},

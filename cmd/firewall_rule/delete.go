@@ -46,7 +46,7 @@ func DeletRule()  {
 	jsonReq, _ := json.Marshal(DeleteModel)
 	res := functions.JsonOutput(jsonReq)
 	fmt.Println(res)
-	req, err := http.NewRequest("DELETE", functions.ViperReadConfig().UrlPfsense+"v1/firewall/rule", bytes.NewBuffer(jsonReq))
+	req, err := http.NewRequest("DELETE", functions.ViperReadConfig().Host+"v1/firewall/rule", bytes.NewBuffer(jsonReq))
 	req.Header.Add("Authorization", functions.ViperReadConfig().ClientId + " "+functions.ViperReadConfig().ClientToken)
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
