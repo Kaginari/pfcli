@@ -1,4 +1,4 @@
-package services
+package lib
 
 import (
 	"bytes"
@@ -11,11 +11,9 @@ import (
 	"net/http"
 )
 
-func AddRule(firewallRule models.FirewallRule)  {
-	jsonReq, _ := json.Marshal(firewallRule)
-	res := functions.JsonOutput(jsonReq)
-	fmt.Println(res)
-	req, err := http.NewRequest("POST", ViperReadConfig().Host+"v1/firewall/rule", bytes.NewBuffer(jsonReq))
+func ApplayInterface()  {
+	
+	req, err := http.NewRequest("POST", ViperReadConfig().Host+"v1/interface/apply", nil)
 	req.Header.Add("Authorization", ViperReadConfig().ClientId + " "+ViperReadConfig().ClientToken)
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
@@ -32,10 +30,32 @@ func AddRule(firewallRule models.FirewallRule)  {
 	fmt.Println("response body : ", resp.Body)
 	fmt.Println("response Headers : ", resp.Header)
 }
+func CreateInterface(Interface_Model models.Interface )  {
+	jsonReq, _ := json.Marshal(Interface_Model)
+	res := functions.JsonOutput(jsonReq)
+	fmt.Println(res)
+	req, err := http.NewRequest("POST", ViperReadConfig().Host+"v1/interface", bytes.NewBuffer(jsonReq))
+	req.Header.Add("Authorization", ViperReadConfig().ClientId + " "+ViperReadConfig().ClientToken)
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+	resp, err := client.Do(req)
 
+	if err != nil {
+		log.Fatal(err)
 
-func RuleList()  {
-	req, err := http.NewRequest("GET", ViperReadConfig().Host+"v1/firewall/rule", nil)
+	}
+
+	fmt.Println("response Status : ", resp.Status)
+	fmt.Println("response body : ", resp.Body)
+	fmt.Println("response Headers : ", resp.Header)
+}
+func DeleteInterface(InterfaceDelete models.InterfaceDelete)  {
+	jsonReq, _ := json.Marshal(InterfaceDelete)
+	res := functions.JsonOutput(jsonReq)
+	fmt.Println(res)
+	req, err := http.NewRequest("DELETE", ViperReadConfig().Host+"v1/interface", bytes.NewBuffer(jsonReq))
 	req.Header.Add("Authorization", ViperReadConfig().ClientId + " "+ViperReadConfig().ClientToken)
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
@@ -48,20 +68,15 @@ func RuleList()  {
 
 
 	}
-
-
 
 	fmt.Println("response Status : ", resp.Status)
 	fmt.Println("response Headers : ", resp.Header)
 }
 
-
-func DeletRule(DeleteModel models.DeleteFirewallRule)  {
-	jsonReq, _ := json.Marshal(DeleteModel)
-	res := functions.JsonOutput(jsonReq)
-	fmt.Println(res)
-	req, err := http.NewRequest("DELETE", ViperReadConfig().Host+"v1/firewall/rule", bytes.NewBuffer(jsonReq))
-	req.Header.Add("Authorization", ViperReadConfig().ClientId + " "+ViperReadConfig().ClientToken)
+func InterfaceList()  {
+	fmt.Println(ViperReadConfig().Host+"v1/interface")
+	req, err := http.NewRequest("GET", ViperReadConfig().Host+"v1/interface", nil)
+	req.Header.Add("Authorization", ViperReadConfig().ClientId+" "+ViperReadConfig().ClientToken)
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
@@ -70,14 +85,8 @@ func DeletRule(DeleteModel models.DeleteFirewallRule)  {
 
 	if err != nil {
 		log.Fatal(err)
-
-
 	}
-
 	fmt.Println("response Status : ", resp.Status)
-	jsonReq2, _ := json.Marshal(resp.Body)
-	res2 := functions.JsonOutput(jsonReq2)
-	fmt.Println(res2)
+	fmt.Println("response body :",resp.Body)
 	fmt.Println("response Headers : ", resp.Header)
-
 }

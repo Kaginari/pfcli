@@ -17,7 +17,7 @@ package nat_one_2_one
 
 import (
 	"github.com/spf13/cobra"
-	"gitlab.com/nt-factory/2021/admin/pfcli/services"
+	"gitlab.com/nt-factory/2021/admin/pfcli/lib"
 )
 
 // listCmd represents the list command
@@ -31,7 +31,7 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		services.NatList()
+		lib.NatList()
 	},
 }
 

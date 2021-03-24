@@ -18,7 +18,7 @@ package Interface_VLAN
 import (
 	"github.com/spf13/cobra"
 	"gitlab.com/nt-factory/2021/admin/pfcli/models"
-	"gitlab.com/nt-factory/2021/admin/pfcli/services"
+	"gitlab.com/nt-factory/2021/admin/pfcli/lib"
 )
 
 // createCmd represents the create command
@@ -26,7 +26,7 @@ var CreateCmd = &cobra.Command{
 	Use:   "create",
 
 	Run: func(cmd *cobra.Command, args []string) {
-	services.AddVlan(InetrfaceVLAN)
+	lib.AddVlan(InetrfaceVLAN)
 	},
 }
  var InetrfaceVLAN models.InterfaceVLAN

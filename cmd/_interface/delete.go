@@ -18,14 +18,14 @@ package _interface
 import (
 	"github.com/spf13/cobra"
 	"gitlab.com/nt-factory/2021/admin/pfcli/models"
-	"gitlab.com/nt-factory/2021/admin/pfcli/services"
+	"gitlab.com/nt-factory/2021/admin/pfcli/lib"
 )
 
 // deleteCmd represents the delete command
 var DeleteCmd = &cobra.Command{
 	Use:   "delete",
 	Run: func(cmd *cobra.Command, args []string) {
-	services.DeleteInterface(InterfaceDelete)
+	lib.DeleteInterface(InterfaceDelete)
 	},
 }
 var InterfaceDelete models.InterfaceDelete

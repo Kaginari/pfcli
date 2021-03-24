@@ -17,7 +17,7 @@ package Virtual_IPs
 
 import (
 	"github.com/spf13/cobra"
-	"gitlab.com/nt-factory/2021/admin/pfcli/services"
+	"gitlab.com/nt-factory/2021/admin/pfcli/lib"
 )
 
 // listCmd represents the list command
@@ -25,7 +25,7 @@ var ListCmd = &cobra.Command{
 	Use:   "list",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		services.VrirtualIPSList()
+		lib.VrirtualIPSList()
 	},
 }
 
