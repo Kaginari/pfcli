@@ -34,6 +34,7 @@ func AddCommands() {
 	// Root Commands
 
 	rootCmd.AddCommand(versionCmd)
+
 	rootCmd.AddCommand(NatOneToOneCmd)
 	NatOneToOneAddCommands()
 
@@ -42,6 +43,12 @@ func AddCommands() {
 
 	rootCmd.AddCommand(VirtualIpsCmd)
 	VirtualIpsAddCommands()
+
+	rootCmd.AddCommand(InterfaceVLANCmd)
+	InterfaceVLANAddCommands()
+
+	rootCmd.AddCommand(interfaceCmd)
+	InterfaceAddCommande()
 
 }
  // init cli configuration

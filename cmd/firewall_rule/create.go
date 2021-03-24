@@ -81,7 +81,8 @@ func AddRule()  {
 
 	}
 
-	fmt.Println("response Status : ", resp.Body)
+	fmt.Println("response Status : ", resp.Status)
+	fmt.Println("response body : ", resp.Body)
 	fmt.Println("response Headers : ", resp.Header)
 }
 
