@@ -16,22 +16,16 @@ limitations under the License.
 package firewall_rule
 
 import (
-	"bytes"
-	"crypto/tls"
-	"encoding/json"
-	"fmt"
 	"github.com/spf13/cobra"
-	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 	"gitlab.com/nt-factory/2021/admin/pfcli/models"
-	"log"
-	"net/http"
+	"gitlab.com/nt-factory/2021/admin/pfcli/services"
 )
 
 // DeleteCmd represents the delete command
 var DeleteCmd = &cobra.Command{
 	Use:   "delete",
 	Run: func(cmd *cobra.Command, args []string) {
-		DeletRule()
+		services.DeletRule(DeleteModel)
 	},
 }
 
@@ -41,29 +35,4 @@ func init() {
 	pf := DeleteCmd.PersistentFlags()
 	pf.StringVarP(&DeleteModel.Tracker, "tracker", "t", "", "Specify the rule tracker ID to delete")
 	pf.BoolVar(&DeleteModel.Apply, "apply",true, models.FWRApplyDesc)
-}
-func DeletRule()  {
-	jsonReq, _ := json.Marshal(DeleteModel)
-	res := functions.JsonOutput(jsonReq)
-	fmt.Println(res)
-	req, err := http.NewRequest("DELETE", functions.ViperReadConfig().Host+"v1/firewall/rule", bytes.NewBuffer(jsonReq))
-	req.Header.Add("Authorization", functions.ViperReadConfig().ClientId + " "+functions.ViperReadConfig().ClientToken)
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-	client := &http.Client{Transport: tr}
-	resp, err := client.Do(req)
-
-	if err != nil {
-		log.Fatal(err)
-
-
-	}
-
-	fmt.Println("response Status : ", resp.Status)
-	jsonReq2, _ := json.Marshal(resp.Body)
-	res2 := functions.JsonOutput(jsonReq2)
-	fmt.Println(res2)
-	fmt.Println("response Headers : ", resp.Header)
-
 }

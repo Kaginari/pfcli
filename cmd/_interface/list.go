@@ -16,36 +16,17 @@ limitations under the License.
 package _interface
 
 import (
-	"crypto/tls"
-	"fmt"
 	"github.com/spf13/cobra"
-	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
-	"log"
-	"net/http"
+	"gitlab.com/nt-factory/2021/admin/pfcli/services"
 )
 
 // listCmd represents the list command
 var ListCmd = &cobra.Command{
 	Use:   "list",
 	Run: func(cmd *cobra.Command, args []string) {
-		interfaceList()
+		services.InterfaceList()
 	},
 }
 
 func init() {
-}
-func interfaceList()  {
-	req, err := http.NewRequest("GET", functions.ViperReadConfig().Host+"v1/interface", nil)
-	req.Header.Add("Authorization", functions.ViperReadConfig().ClientId + " "+functions.ViperReadConfig().ClientToken)
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-	client := &http.Client{Transport: tr}
-	resp, err := client.Do(req)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println("response Status : ", resp.Status)
-	fmt.Println("response Headers : ", resp.Header)
 }

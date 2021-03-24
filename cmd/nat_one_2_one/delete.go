@@ -16,22 +16,16 @@ limitations under the License.
 package nat_one_2_one
 
 import (
-	"bytes"
-	"crypto/tls"
-	"encoding/json"
-	"fmt"
 	"github.com/spf13/cobra"
-	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 	"gitlab.com/nt-factory/2021/admin/pfcli/models"
-	"log"
-	"net/http"
+	"gitlab.com/nt-factory/2021/admin/pfcli/services"
 )
 
 // deleteCmd represents the delete command
 var DeleteCmd = &cobra.Command{
 	Use:   "delete",
 	Run: func(cmd *cobra.Command, args []string) {
-		DeleteNat()
+		services.DeleteNat(DeleteModel)
 	},
 }
 
@@ -41,24 +35,3 @@ func init() {
 	pf.BoolVar(&DeleteModel.Apply, "apply",true, models.NAT121ApplyDesc)
 }
 var DeleteModel models.DeleteNatOneToOne
-func DeleteNat()  {
-	jsonReq, _ := json.Marshal(DeleteModel)
-	res := functions.JsonOutput(jsonReq)
-	fmt.Println(res)
-	req, err := http.NewRequest("DELETE", functions.ViperReadConfig().Host+"v1/firewall/nat/one_to_one", bytes.NewBuffer(jsonReq))
-	req.Header.Add("Authorization", functions.ViperReadConfig().ClientId + " "+functions.ViperReadConfig().ClientToken)
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-	client := &http.Client{Transport: tr}
-	resp, err := client.Do(req)
-
-	if err != nil {
-		log.Fatal(err)
-
-	}
-
-	fmt.Println("response Status : ", resp.Status)
-	fmt.Println("response body : ", resp.Body)
-	fmt.Println("response Headers : ", resp.Header)
-}

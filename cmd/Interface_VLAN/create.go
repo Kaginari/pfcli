@@ -16,15 +16,9 @@ limitations under the License.
 package Interface_VLAN
 
 import (
-	"bytes"
-	"crypto/tls"
-	"encoding/json"
-	"fmt"
 	"github.com/spf13/cobra"
-	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 	"gitlab.com/nt-factory/2021/admin/pfcli/models"
-	"log"
-	"net/http"
+	"gitlab.com/nt-factory/2021/admin/pfcli/services"
 )
 
 // createCmd represents the create command
@@ -32,7 +26,7 @@ var CreateCmd = &cobra.Command{
 	Use:   "create",
 
 	Run: func(cmd *cobra.Command, args []string) {
-	AddVlan()
+	services.AddVlan(InetrfaceVLAN)
 	},
 }
  var InetrfaceVLAN models.InterfaceVLAN
@@ -44,25 +38,5 @@ func init() {
 	pf.StringVarP(&InetrfaceVLAN.Descr, "descr", "d", "", models.IvlanDescrDesc)
 }
 
-func AddVlan()  {
-	jsonReq, _ := json.Marshal(InetrfaceVLAN)
-	res := functions.JsonOutput(jsonReq)
-	fmt.Println(res)
-	req, err := http.NewRequest("POST", functions.ViperReadConfig().Host+"v1/interface/vlan", bytes.NewBuffer(jsonReq))
-	req.Header.Add("Authorization", functions.ViperReadConfig().ClientId + " "+functions.ViperReadConfig().ClientToken)
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-	client := &http.Client{Transport: tr}
-	resp, err := client.Do(req)
 
-	if err != nil {
-		log.Fatal(err)
-
-	}
-
-	fmt.Println("response Status : ", resp.Status)
-	fmt.Println("response body : ", resp.Body)
-	fmt.Println("response Headers : ", resp.Header)
-}
 //pfcli InterfaceVLAN create --if 172.5.6.3 --tag 1 --descr newVlan

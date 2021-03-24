@@ -1,22 +1,16 @@
 package nat_one_2_one
 
 import (
-	"bytes"
-	"crypto/tls"
-	"encoding/json"
-	"fmt"
 	"github.com/spf13/cobra"
-	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 	"gitlab.com/nt-factory/2021/admin/pfcli/models"
-	"log"
-	"net/http"
+	"gitlab.com/nt-factory/2021/admin/pfcli/services"
 )
 
 var CreateCmd = &cobra.Command{
 	Use:   "create",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		CreateNatOneToOne()
+		services.CreateNatOneToOne(natOneToOne)
 	},
 }
 
@@ -63,27 +57,7 @@ func createFlags()  {
 	//}
 }
 
-func CreateNatOneToOne()  {
-	jsonReq, _ := json.Marshal(natOneToOne)
-	res := functions.JsonOutput(jsonReq)
-	fmt.Println(res)
-	req, err := http.NewRequest("POST", functions.ViperReadConfig().Host+"v1/firewall/nat/one_to_one", bytes.NewBuffer(jsonReq))
-	req.Header.Add("Authorization", functions.ViperReadConfig().ClientId + " "+functions.ViperReadConfig().ClientToken)
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-	client := &http.Client{Transport: tr}
-	resp, err := client.Do(req)
 
-	if err != nil {
-		log.Fatal(err)
-
-	}
-
-	fmt.Println("response Status : ", resp.Status)
-	fmt.Println("response body : ", resp.Body)
-	fmt.Println("response Headers : ", resp.Header)
-}
 
 //cmd
 // pfcli nat_one_to_one create  --description Test_1:1_NAT_entry -d 172.2.5.6 --external 1.2.3.5 --interface WAN --nat-reflection enable --source any
