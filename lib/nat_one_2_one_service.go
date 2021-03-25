@@ -1,4 +1,4 @@
-package services
+package lib
 
 import (
 	"bytes"
@@ -11,11 +11,11 @@ import (
 	"net/http"
 )
 
-func AddVlan(InetrfaceVLAN models.InterfaceVLAN)  {
-	jsonReq, _ := json.Marshal(InetrfaceVLAN)
+func CreateNatOneToOne(natOneToOne models.NatOneToOne)  {
+	jsonReq, _ := json.Marshal(natOneToOne)
 	res := functions.JsonOutput(jsonReq)
 	fmt.Println(res)
-	req, err := http.NewRequest("POST", ViperReadConfig().Host+"v1/interface/vlan", bytes.NewBuffer(jsonReq))
+	req, err := http.NewRequest("POST", ViperReadConfig().Host+"v1/firewall/nat/one_to_one", bytes.NewBuffer(jsonReq))
 	req.Header.Add("Authorization", ViperReadConfig().ClientId + " "+ViperReadConfig().ClientToken)
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
@@ -33,11 +33,12 @@ func AddVlan(InetrfaceVLAN models.InterfaceVLAN)  {
 	fmt.Println("response Headers : ", resp.Header)
 }
 
-func DeleteVlan(DeleteInetrfaceVLAN models.DeleteIVlan){
-	jsonReq, _ := json.Marshal(DeleteInetrfaceVLAN)
+
+func DeleteNat(DeleteModel models.DeleteNatOneToOne)  {
+	jsonReq, _ := json.Marshal(DeleteModel)
 	res := functions.JsonOutput(jsonReq)
 	fmt.Println(res)
-	req, err := http.NewRequest("DELETE", ViperReadConfig().Host+"v1/interface/vlan", bytes.NewBuffer(jsonReq))
+	req, err := http.NewRequest("DELETE", ViperReadConfig().Host+"v1/firewall/nat/one_to_one", bytes.NewBuffer(jsonReq))
 	req.Header.Add("Authorization", ViperReadConfig().ClientId + " "+ViperReadConfig().ClientToken)
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
@@ -48,26 +49,26 @@ func DeleteVlan(DeleteInetrfaceVLAN models.DeleteIVlan){
 	if err != nil {
 		log.Fatal(err)
 
-
 	}
 
 	fmt.Println("response Status : ", resp.Status)
+	fmt.Println("response body : ", resp.Body)
 	fmt.Println("response Headers : ", resp.Header)
-
 }
 
-func VlanList()  {
-	req, err := http.NewRequest("GET", ViperReadConfig().Host+"v1/interface/vlan", nil)
+
+func NatList()  {
+	req, err := http.NewRequest("GET", ViperReadConfig().Host+"v1/firewall/nat/one_to_one", nil)
 	req.Header.Add("Authorization", ViperReadConfig().ClientId + " "+ViperReadConfig().ClientToken)
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
 	client := &http.Client{Transport: tr}
 	resp, err := client.Do(req)
-
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("response Status : ", resp.Status)
+	fmt.Println("response Body : ", resp.Body)
 	fmt.Println("response Headers : ", resp.Header)
 }

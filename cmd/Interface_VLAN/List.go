@@ -17,14 +17,14 @@ package Interface_VLAN
 
 import (
 	"github.com/spf13/cobra"
-	"gitlab.com/nt-factory/2021/admin/pfcli/services"
+	"gitlab.com/nt-factory/2021/admin/pfcli/lib"
 )
 
 // ListCmd represents the List command
 var ListCmd = &cobra.Command{
 	Use:   "list",
 	Run: func(cmd *cobra.Command, args []string) {
-		services.VlanList()
+		lib.VlanList()
 	},
 }
 

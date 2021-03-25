@@ -18,7 +18,7 @@ package Interface_VLAN
 import (
 	"github.com/spf13/cobra"
 	"gitlab.com/nt-factory/2021/admin/pfcli/models"
-	"gitlab.com/nt-factory/2021/admin/pfcli/services"
+	"gitlab.com/nt-factory/2021/admin/pfcli/lib"
 )
 
 // DeleteCmd represents the Delete command
@@ -26,7 +26,7 @@ var DeleteCmd = &cobra.Command{
 	Use:   "delete",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		services.DeleteVlan(DeleteInetrfaceVLAN)
+		lib.DeleteVlan(DeleteInetrfaceVLAN)
 	},
 }
 var DeleteInetrfaceVLAN models.DeleteIVlan

@@ -17,7 +17,7 @@ package _interface
 
 import (
 	"github.com/spf13/cobra"
-	"gitlab.com/nt-factory/2021/admin/pfcli/services"
+	"gitlab.com/nt-factory/2021/admin/pfcli/lib"
 )
 
 // applyCmd represents the apply command
@@ -26,7 +26,7 @@ var ApplyCmd = &cobra.Command{
 	Short: "Apply pending interface updates. This will apply the current configuration for each interface. This endpoint returns no data.",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		services.ApplayInterface()
+		lib.ApplayInterface()
 	},
 }
 
