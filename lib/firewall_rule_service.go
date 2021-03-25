@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 	"gitlab.com/nt-factory/2021/admin/pfcli/models"
+	"io/ioutil"
 	"log"
 	"net/http"
 )
@@ -15,9 +16,15 @@ const FIREWALL_RULES_API_URI = "v1/firewall/rule"
 
 type FirewallRulesResponse struct {
 
+	Status string `json:"status"`
+	Code int64 `json:"code"`
+	Return int64 `json:"return"`
+	Message string `json:"message"`
+	Date interface{}  `json:"data"`
 }
+
 type IFirewallRuleService interface {
-	Create(model models.FirewallRule) (*FirewallRulesResponse , error)
+	Create(model models.FirewallRule) (FirewallRulesResponse , error)
 	Delete(model models.DeleteFirewallRule) (*FirewallRulesResponse , error)
 	List() (*FirewallRulesResponse , error)
 
@@ -28,21 +35,28 @@ type FirewallRuleService struct {
 }
 var _ IFirewallRuleService = &FirewallRuleService{}
 
-func FirewallRuleServiceInit (client PfClient) *FirewallRuleService{
+func FirewallRuleServiceConstruct (client PfClient) *FirewallRuleService{
 	return &FirewallRuleService{
 		client: client ,
 		path:   FIREWALL_RULES_API_URI,
 	}
 }
 
-func (f FirewallRuleService) Create(model models.FirewallRule) (*FirewallRulesResponse , error) {
+func (f FirewallRuleService) Create(model models.FirewallRule) (FirewallRulesResponse , error) {
 		body, _ := json.Marshal(model)
-		_ , err := f.client.Post(f.path ,body)
+		response , err := f.client.Post(f.path ,body)
+		var firewallRule FirewallRulesResponse
 		if err != nil {
-			return nil , err
+			return firewallRule , err
 		}
+		bytes, err := ioutil.ReadAll(response.Body)
+		if err != nil {
+		log.Fatal(err)
+		}
+
+		json.Unmarshal(bytes , &firewallRule)
 	  // TODO PARSE RESPONSE AND RETURN THE STRUCT
-	  return nil, nil
+	   return firewallRule, nil
 }
 
 func (f FirewallRuleService) Delete(model models.DeleteFirewallRule)  (*FirewallRulesResponse , error){

@@ -1,8 +1,10 @@
 package firewall_rule
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/spf13/cobra"
+	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 	"gitlab.com/nt-factory/2021/admin/pfcli/lib"
 	"gitlab.com/nt-factory/2021/admin/pfcli/models"
 )
@@ -15,10 +17,16 @@ var CreateCmd = &cobra.Command{
 	//	return functions.CheckRequiredFlags(cmd.Flags())
 	//},
 	Run: func(cmd *cobra.Command, args []string) {
-
 		config := lib.GetConfig()
-		service  := lib.FirewallRuleServiceInit(config.Context())
-		_ , err := service.Create(firewallRule)
+		pfClient := config.Context()
+		service  := lib.FirewallRuleServiceConstruct(pfClient)
+		res , err := service.Create(firewallRule)
+		jsonReq, _ := json.Marshal(res)
+		rest := functions.JsonOutput(jsonReq)
+		fmt.Println(rest)
+		created, _ := functions.Find(res.Date, "created")
+		time , _ := functions.Find(created , "time")
+		fmt.Println(time)
 		if err != nil {
 			fmt.Println("un errur est survenu")
 			// TODO FIN BETTER WAY TO HANDLE ERRORS
