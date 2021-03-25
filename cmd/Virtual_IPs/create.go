@@ -16,7 +16,10 @@ limitations under the License.
 package Virtual_IPs
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/spf13/cobra"
+	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 	"gitlab.com/nt-factory/2021/admin/pfcli/models"
 	"gitlab.com/nt-factory/2021/admin/pfcli/lib"
 )
@@ -25,7 +28,18 @@ import (
 var CreateCmd = &cobra.Command{
 	Use:   "create",
 	Run: func(cmd *cobra.Command, args []string) {
-		lib.CreateVirtualIPS(VirtualIPS)
+		config := lib.GetConfig()
+		pfClient := config.Context()
+		service  := lib.VirtualIpsServiceConstruct(pfClient)
+		res , err := service.Create(VirtualIPS)
+		if err != nil {
+			fmt.Println("un error est occurred")
+			// TODO FIN BETTER WAY TO HANDLE ERRORS
+		}
+		jsonRes, _ := json.Marshal(res)
+		rest := functions.JsonOutput(jsonRes)
+
+		fmt.Println(rest)
 	},
 }
 
@@ -47,4 +61,4 @@ func createFlags()  {
 	pf.StringVarP(&VirtualIPS.Password, "password", "p","",models.VertualIPS_Password_Desc )
 }
 
-//pfcli virtualIps create --mode ipalias --interface 172.16.77.239 --subnet 172.16.77.239/32 --password testpass --descr This_is_a_virtual_IP_added_via_pfSense_API
+//pfcli virtualIps create --mode carp --interface WAN --subnet 172.16.77.239/32 --password testpass --descr This_is_a_virtual_IP_added_via_pfSense_API

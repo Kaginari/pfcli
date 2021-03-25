@@ -13,8 +13,7 @@ func ViperReadConfig() models.Config  {
 	config.Host= os.Getenv("PFCLI_HOST")
 	config.ClientId= os.Getenv("PFCLI_CLIENT")
 	config.ClientToken= os.Getenv("PFCLI_SECRET")
-	if (config.Host!="" && config.ClientId!="" && config.ClientToken!=""){
-		fmt.Println("this is from env variable")
+	if config.Host!="" && config.ClientId!="" && config.ClientToken!="" {
 		return config
 	}else {
 	err := viper.ReadInConfig()
@@ -23,11 +22,10 @@ func ViperReadConfig() models.Config  {
 	}
 	host := fmt.Sprintf("%v", viper.Get("host"))
 	config.Host= host
-	client_id := fmt.Sprintf("%v", viper.Get("client-id"))
-	config.ClientId= client_id
-	client_token := fmt.Sprintf("%v", viper.Get("client-token"))
-	config.ClientToken=client_token
-		fmt.Println("this is from copnfg.yaml")
+	clientId := fmt.Sprintf("%v", viper.Get("client-id"))
+	config.ClientId= clientId
+	clientToken := fmt.Sprintf("%v", viper.Get("client-token"))
+	config.ClientToken= clientToken
 	return config
 	}
 }

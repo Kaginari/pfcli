@@ -13,40 +13,22 @@ var firewallRule models.FirewallRule
 
 var CreateCmd = &cobra.Command{
 	Use:   "create",
-	//PreRunE: func(cmd *cobra.Command, args []string) error {
-	//	return functions.CheckRequiredFlags(cmd.Flags())
-	//},
 	Run: func(cmd *cobra.Command, args []string) {
 		config := lib.GetConfig()
 		pfClient := config.Context()
 		service  := lib.FirewallRuleServiceConstruct(pfClient)
 		res , err := service.Create(firewallRule)
-		jsonReq, _ := json.Marshal(res)
-		rest := functions.JsonOutput(jsonReq)
+		if err != nil {
+			fmt.Println("un error est occurred")
+			// TODO FIN BETTER WAY TO HANDLE ERRORS
+		}
+		jsonRes, _ := json.Marshal(res)
+		rest := functions.JsonOutput(jsonRes)
+
 		fmt.Println(rest)
 		created, _ := functions.Find(res.Date, "created")
 		time , _ := functions.Find(created , "time")
 		fmt.Println(time)
-		if err != nil {
-			fmt.Println("un errur est survenu")
-			// TODO FIN BETTER WAY TO HANDLE ERRORS
-		}
-
-
-		//jsonReq, _ := json.Marshal(natOneToOne)
-		//fmt.Printf("%s \n" ,jsonReq)
-
-		//resp, err := http.Post("pfenseurl", "application/json; charset=utf-8", bytes.NewBuffer(jsonReq))
-		//if err != nil {
-		//	log.Fatalln(err)
-		//}
-		//
-		//defer resp.Body.Close()
-		//bodyBytes, _ := ioutil.ReadAll(resp.Body)
-		//
-		//// Convert response body to string
-		//bodyString := string(bodyBytes)
-		//fmt.Println(bodyString)
 
 	},
 }

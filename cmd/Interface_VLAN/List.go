@@ -16,7 +16,10 @@ limitations under the License.
 package Interface_VLAN
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/spf13/cobra"
+	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 	"gitlab.com/nt-factory/2021/admin/pfcli/lib"
 )
 
@@ -24,7 +27,18 @@ import (
 var ListCmd = &cobra.Command{
 	Use:   "list",
 	Run: func(cmd *cobra.Command, args []string) {
-		lib.VlanList()
+		config := lib.GetConfig()
+		pfClient := config.Context()
+		service  := lib.InterfaceVlanConstruct(pfClient)
+		res , err := service.List()
+		if err != nil {
+			fmt.Println("un error est occurred")
+			// TODO FIN BETTER WAY TO HANDLE ERRORS
+		}
+		jsonRes, _ := json.Marshal(res)
+		rest := functions.JsonOutput(jsonRes)
+
+		fmt.Println(rest)
 	},
 }
 

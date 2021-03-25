@@ -16,7 +16,10 @@ limitations under the License.
 package firewall_rule
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/spf13/cobra"
+	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 	"gitlab.com/nt-factory/2021/admin/pfcli/lib"
 )
 
@@ -24,7 +27,32 @@ import (
 var ListCmd = &cobra.Command{
 	Use:   "list",
 	Run: func(cmd *cobra.Command, args []string) {
-		lib.RuleList()
+		config := lib.GetConfig()
+		pfClient:=config.Context()
+		service:=lib.FirewallRuleServiceConstruct(pfClient)
+		res,err:=service.List()
+		if err != nil {
+			fmt.Println("un error est occurred")
+			// TODO FIN BETTER WAY TO HANDLE ERRORS
+		}
+		jsonRes, _ := json.Marshal(res)
+		rest := functions.JsonOutput(jsonRes)
+
+		fmt.Println(rest)
+		if len(res.Date)>0 {
+			Type, _ := functions.Find(res.Date[0], "type")
+
+			fmt.Println("type:::::::::::", Type)
+			source, _ := functions.Find(res.Date[0], "source")
+			add, _ := functions.Find(source, "address")
+			fmt.Println("add:::::::::::", add)
+			Type1, _ := functions.Find(res.Date[1], "type")
+
+			fmt.Println("type:::::::::::", Type1)
+			source1, _ := functions.Find(res.Date[1], "source")
+			port1, _ := functions.Find(source1, "port")
+			fmt.Println("add:::::::::::", port1)
+		}
 	},
 }
 

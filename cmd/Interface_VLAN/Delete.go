@@ -16,7 +16,10 @@ limitations under the License.
 package Interface_VLAN
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/spf13/cobra"
+	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 	"gitlab.com/nt-factory/2021/admin/pfcli/models"
 	"gitlab.com/nt-factory/2021/admin/pfcli/lib"
 )
@@ -26,14 +29,25 @@ var DeleteCmd = &cobra.Command{
 	Use:   "delete",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		lib.DeleteVlan(DeleteInetrfaceVLAN)
+		config := lib.GetConfig()
+		pfClient:=config.Context()
+		service:=lib.InterfaceVlanConstruct(pfClient)
+		res,err:=service.Delete(modelDelete)
+		if err != nil {
+			fmt.Println("un error est occurred")
+			// TODO FIN BETTER WAY TO HANDLE ERRORS
+		}
+		jsonRes, _ := json.Marshal(res)
+		rest := functions.JsonOutput(jsonRes)
+
+		fmt.Println(rest)
 	},
 }
-var DeleteInetrfaceVLAN models.DeleteIVlan
+var modelDelete models.InterfaceVlanDelete
 func init() {
 	pf := DeleteCmd.PersistentFlags()
-	pf.StringVarP(&DeleteInetrfaceVLAN.Vlanif, "vlanif", "v", "", models.IvlanVlanifDesc)
-	pf.StringVarP(&DeleteInetrfaceVLAN.Id, "id", "i", "", models.IvlanIdfDesc)
+	pf.StringVarP(&modelDelete.Vlanif, "vlanif", "v", "", models.IvlanVlanifDesc)
+	pf.StringVarP(&modelDelete.Id, "id", "i", "", models.IvlanIdfDesc)
 }
 
 //pfcli InterfaceVLAN delete --vlanif vmp1

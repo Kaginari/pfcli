@@ -1,92 +1,95 @@
 package lib
 
 import (
-	"bytes"
-	"crypto/tls"
 	"encoding/json"
-	"fmt"
-	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 	"gitlab.com/nt-factory/2021/admin/pfcli/models"
+	"io/ioutil"
 	"log"
-	"net/http"
 )
 
-func ApplayInterface()  {
-	
-	req, err := http.NewRequest("POST", ViperReadConfig().Host+"v1/interface/apply", nil)
-	req.Header.Add("Authorization", ViperReadConfig().ClientId + " "+ViperReadConfig().ClientToken)
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-	client := &http.Client{Transport: tr}
-	resp, err := client.Do(req)
+const INTERFACE_API_URI = "v1/interface"
 
-	if err != nil {
-		log.Fatal(err)
+type InterfaceResponse struct {
 
-	}
-
-	fmt.Println("response Status : ", resp.Status)
-	fmt.Println("response body : ", resp.Body)
-	fmt.Println("response Headers : ", resp.Header)
+	Status      string 			`json:"status"`
+	Code 		int64 			`json:"code"`
+	Return 		int64 			`json:"return"`
+	Message 	string 			`json:"message"`
+	Date 		interface{}  	`json:"data"`
 }
-func CreateInterface(Interface_Model models.Interface )  {
-	jsonReq, _ := json.Marshal(Interface_Model)
-	res := functions.JsonOutput(jsonReq)
-	fmt.Println(res)
-	req, err := http.NewRequest("POST", ViperReadConfig().Host+"v1/interface", bytes.NewBuffer(jsonReq))
-	req.Header.Add("Authorization", ViperReadConfig().ClientId + " "+ViperReadConfig().ClientToken)
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-	client := &http.Client{Transport: tr}
-	resp, err := client.Do(req)
-
-	if err != nil {
-		log.Fatal(err)
-
-	}
-
-	fmt.Println("response Status : ", resp.Status)
-	fmt.Println("response body : ", resp.Body)
-	fmt.Println("response Headers : ", resp.Header)
+type IinterfaceService interface {
+	Apply()(InterfaceResponse,error)
+	Create(model models.Interface )(InterfaceResponse,error)
+	Delete(model models.InterfaceDelete )(InterfaceResponse,error)
+	List()(InterfaceResponse,error)
 }
-func DeleteInterface(InterfaceDelete models.InterfaceDelete)  {
-	jsonReq, _ := json.Marshal(InterfaceDelete)
-	res := functions.JsonOutput(jsonReq)
-	fmt.Println(res)
-	req, err := http.NewRequest("DELETE", ViperReadConfig().Host+"v1/interface", bytes.NewBuffer(jsonReq))
-	req.Header.Add("Authorization", ViperReadConfig().ClientId + " "+ViperReadConfig().ClientToken)
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-	client := &http.Client{Transport: tr}
-	resp, err := client.Do(req)
-
-	if err != nil {
-		log.Fatal(err)
-
-
-	}
-
-	fmt.Println("response Status : ", resp.Status)
-	fmt.Println("response Headers : ", resp.Header)
+type InterfaceServiceImp struct {
+	client PfClient
+	path string
 }
 
-func InterfaceList()  {
-	fmt.Println(ViperReadConfig().Host+"v1/interface")
-	req, err := http.NewRequest("GET", ViperReadConfig().Host+"v1/interface", nil)
-	req.Header.Add("Authorization", ViperReadConfig().ClientId+" "+ViperReadConfig().ClientToken)
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+func InterfaceServiceConstruct(client PfClient) *InterfaceServiceImp {
+	return &InterfaceServiceImp{
+		client : client,
+		path : INTERFACE_API_URI,
 	}
-	client := &http.Client{Transport: tr}
-	resp, err := client.Do(req)
+}
+var _ IinterfaceService=&InterfaceServiceImp{}
+var interfaceResponse InterfaceResponse
 
+func (i InterfaceServiceImp) Apply() (InterfaceResponse, error) {
+	response , err := i.client.Post(i.path+"/apply" ,nil)
+	if err != nil {
+		return interfaceResponse , err
+	}
+	bytes, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("response Status : ", resp.Status)
-	fmt.Println("response body :",resp.Body)
-	fmt.Println("response Headers : ", resp.Header)
+	_ = json.Unmarshal(bytes , &interfaceResponse)
+	// TODO PARSE RESPONSE AND RETURN THE STRUCT
+	return interfaceResponse, nil
 }
+
+func (i InterfaceServiceImp) Create(model models.Interface) (InterfaceResponse, error) {
+	body,_:=json.Marshal(model)
+	response ,err :=i.client.Post(i.path,body)
+	if err!=nil{
+		return interfaceResponse, err
+	}
+	bytes,err :=ioutil.ReadAll(response.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	_ = json.Unmarshal(bytes,&interfaceResponse)
+	return interfaceResponse,nil
+}
+
+func (i InterfaceServiceImp) Delete(model models.InterfaceDelete) (InterfaceResponse, error) {
+	body,_:=json.Marshal(model)
+	response,err:=i.client.Delete(i.path,body)
+	if err!=nil{
+		return interfaceResponse, err
+	}
+	bytes ,err :=ioutil.ReadAll(response.Body)
+	if err!=nil {
+		log.Fatal(err)
+	}
+	_ = json.Unmarshal(bytes,&interfaceResponse)
+	return interfaceResponse,nil
+}
+
+func (i InterfaceServiceImp) List() (InterfaceResponse, error) {
+	response,err:=i.client.Get(i.path,nil)
+	if err!=nil{
+		return interfaceResponse, err
+	}
+	bytes ,err :=ioutil.ReadAll(response.Body)
+	if err!=nil {
+		log.Fatal(err)
+	}
+	_ = json.Unmarshal(bytes, &interfaceResponse)
+	return interfaceResponse,nil
+}
+
+

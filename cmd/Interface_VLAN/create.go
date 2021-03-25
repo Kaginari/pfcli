@@ -16,7 +16,10 @@ limitations under the License.
 package Interface_VLAN
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/spf13/cobra"
+	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 	"gitlab.com/nt-factory/2021/admin/pfcli/models"
 	"gitlab.com/nt-factory/2021/admin/pfcli/lib"
 )
@@ -26,16 +29,27 @@ var CreateCmd = &cobra.Command{
 	Use:   "create",
 
 	Run: func(cmd *cobra.Command, args []string) {
-	lib.AddVlan(InetrfaceVLAN)
+		config := lib.GetConfig()
+		pfClient := config.Context()
+		service  := lib.InterfaceVlanConstruct(pfClient)
+		res , err := service.Create(model)
+		if err != nil {
+			fmt.Println("un error est occurred")
+			// TODO FIN BETTER WAY TO HANDLE ERRORS
+		}
+		jsonRes, _ := json.Marshal(res)
+		rest := functions.JsonOutput(jsonRes)
+
+		fmt.Println(rest)
 	},
 }
- var InetrfaceVLAN models.InterfaceVLAN
+ var model models.InterfaceVLAN
 func init() {
 	pf := CreateCmd.PersistentFlags()
-	pf.StringVarP(&InetrfaceVLAN.If, "if", "i", "", models.IvlanIfDesc)
-	pf.StringVarP(&InetrfaceVLAN.Tag, "tag", "t", "", models.IvlanTagDesc)
-	pf.StringVarP(&InetrfaceVLAN.Pcp, "pcp", "p", "", models.IvlanPcpDesc)
-	pf.StringVarP(&InetrfaceVLAN.Descr, "descr", "d", "", models.IvlanDescrDesc)
+	pf.StringVarP(&model.If, "if", "i", "", models.IvlanIfDesc)
+	pf.StringVarP(&model.Tag, "tag", "t", "", models.IvlanTagDesc)
+	pf.StringVarP(&model.Pcp, "pcp", "p", "", models.IvlanPcpDesc)
+	pf.StringVarP(&model.Descr, "descr", "d", "", models.IvlanDescrDesc)
 }
 
 
