@@ -1,15 +1,12 @@
 package lib
 
 import (
-	"bytes"
-	"crypto/tls"
+
 	"encoding/json"
 	"fmt"
-	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
-	"gitlab.com/nt-factory/2021/admin/pfcli/models"
+	"github.com/Kaginari/pfcli/models"
 	"io/ioutil"
 	"log"
-	"net/http"
 )
 
 const VIRTUAL_IPS_API_URI = "v1/firewall/virtual_ip"
