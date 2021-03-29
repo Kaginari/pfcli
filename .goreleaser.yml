@@ -11,7 +11,7 @@ builds:
 nfpms:
   - maintainer: Montassar Bouajina
     description: pfcli project.
-    homepage: https://gitlab.com/nt-factory/2021/admin/pfcli
+    homepage: https://github.com/Kaginari/pfcli
     license: MIT
     formats:
       - deb

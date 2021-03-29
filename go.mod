@@ -1,4 +1,4 @@
-module gitlab.com/nt-factory/2021/admin/pfcli
+module github.com/Kaginari/pfcli
 
 go 1.15
 
