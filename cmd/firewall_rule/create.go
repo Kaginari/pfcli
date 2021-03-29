@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/spf13/cobra"
-	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
-	"gitlab.com/nt-factory/2021/admin/pfcli/lib"
-	"gitlab.com/nt-factory/2021/admin/pfcli/models"
+	"github.com/Kaginari/pfcli/functions"
+	"github.com/Kaginari/pfcli/lib"
+	"github.com/Kaginari/pfcli/models"
 )
 
 var firewallRule models.FirewallRule

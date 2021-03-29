@@ -18,8 +18,8 @@ package config
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"gitlab.com/nt-factory/2021/admin/pfcli/models"
-	"gitlab.com/nt-factory/2021/admin/pfcli/lib"
+	"github.com/Kaginari/pfcli/models"
+	"github.com/Kaginari/pfcli/lib"
 )
 
 // addCmd represents the add command

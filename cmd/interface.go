@@ -17,7 +17,7 @@ package cmd
 
 import (
 	"fmt"
-	"gitlab.com/nt-factory/2021/admin/pfcli/cmd/_interface"
+	"github.com/Kaginari/pfcli/cmd/_interface"
 
 	"github.com/spf13/cobra"
 )

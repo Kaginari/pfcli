@@ -18,10 +18,10 @@ package Virtual_IPs
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/Kaginari/pfcli/functions"
+	"github.com/Kaginari/pfcli/lib"
+	"github.com/Kaginari/pfcli/models"
 	"github.com/spf13/cobra"
-	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
-	"gitlab.com/nt-factory/2021/admin/pfcli/models"
-	"gitlab.com/nt-factory/2021/admin/pfcli/lib"
 )
 
 // DeleteCmd represents the Delete command

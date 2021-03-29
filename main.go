@@ -1,7 +1,7 @@
 package main
 
 import (
-	"gitlab.com/nt-factory/2021/admin/pfcli/cmd"
+	"github.com/Kaginari/pfcli/cmd"
 )
 
 func main()  {
