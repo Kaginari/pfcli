@@ -18,7 +18,7 @@ package config
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"gitlab.com/nt-factory/2021/admin/pfcli/lib"
+	"github.com/Kaginari/pfcli/lib"
 )
 
 // listCmd represents the list command

@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
-	"gitlab.com/nt-factory/2021/admin/pfcli/cmd/nat_one_2_one"
+	"github.com/Kaginari/pfcli/cmd/nat_one_2_one"
 )
 
 var NatOneToOneCmd = &cobra.Command{

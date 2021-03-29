@@ -17,7 +17,7 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
-	"gitlab.com/nt-factory/2021/admin/pfcli/cmd/Virtual_IPs"
+	"github.com/Kaginari/pfcli/cmd/Virtual_IPs"
 )
 
 // virtualIpsCmd represents the virtualIps command

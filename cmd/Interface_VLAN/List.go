@@ -18,9 +18,9 @@ package Interface_VLAN
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/Kaginari/pfcli/functions"
+	"github.com/Kaginari/pfcli/lib"
 	"github.com/spf13/cobra"
-	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
-	"gitlab.com/nt-factory/2021/admin/pfcli/lib"
 )
 
 // ListCmd represents the List command

@@ -2,7 +2,7 @@ package lib
 
 import (
 	"encoding/json"
-	"gitlab.com/nt-factory/2021/admin/pfcli/models"
+	"github.com/Kaginari/pfcli/models"
 	"io/ioutil"
 	"log"
 )

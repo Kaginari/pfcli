@@ -3,7 +3,7 @@ package lib
 import (
 	"fmt"
 	"github.com/spf13/viper"
-	"gitlab.com/nt-factory/2021/admin/pfcli/models"
+	"github.com/Kaginari/pfcli/models"
 	"os"
 )
 
