@@ -16,7 +16,10 @@ limitations under the License.
 package Virtual_IPs
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/spf13/cobra"
+	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 	"gitlab.com/nt-factory/2021/admin/pfcli/models"
 	"gitlab.com/nt-factory/2021/admin/pfcli/lib"
 )
@@ -25,7 +28,18 @@ import (
 var DeleteCmd = &cobra.Command{
 	Use:   "delete",
 	Run: func(cmd *cobra.Command, args []string) {
-		lib.DeleteVirtual_IPS(model)
+		config := lib.GetConfig()
+		pfClient := config.Context()
+		service  := lib.VirtualIpsServiceConstruct(pfClient)
+		res , err := service.Delete(model)
+		if err != nil {
+			fmt.Println("un error est occurred")
+			// TODO FIN BETTER WAY TO HANDLE ERRORS
+		}
+		jsonRes, _ := json.Marshal(res)
+		rest := functions.JsonOutput(jsonRes)
+
+		fmt.Println(rest)
 	},
 }
 var model models.DeleteVirtualIPS

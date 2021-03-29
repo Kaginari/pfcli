@@ -16,7 +16,10 @@ limitations under the License.
 package firewall_rule
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/spf13/cobra"
+	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 	"gitlab.com/nt-factory/2021/admin/pfcli/models"
 	"gitlab.com/nt-factory/2021/admin/pfcli/lib"
 )
@@ -25,7 +28,18 @@ import (
 var DeleteCmd = &cobra.Command{
 	Use:   "delete",
 	Run: func(cmd *cobra.Command, args []string) {
-		lib.DeletRule(DeleteModel)
+		config := lib.GetConfig()
+		pfClient:=config.Context()
+		service:=lib.FirewallRuleServiceConstruct(pfClient)
+		res,err:=service.Delete(DeleteModel)
+		if err != nil {
+			fmt.Println("un error est occurred")
+			// TODO FIN BETTER WAY TO HANDLE ERRORS
+		}
+		jsonRes, _ := json.Marshal(res)
+		rest := functions.JsonOutput(jsonRes)
+
+		fmt.Println(rest)
 	},
 }
 
@@ -36,3 +50,4 @@ func init() {
 	pf.StringVarP(&DeleteModel.Tracker, "tracker", "t", "", "Specify the rule tracker ID to delete")
 	pf.BoolVar(&DeleteModel.Apply, "apply",true, models.FWRApplyDesc)
 }
+//pfcli firewallRule delete --tracker 1616663222 --apply

@@ -6,7 +6,7 @@ type InterfaceVLAN struct {
 	Pcp	  string    `json:"pcp"`
 	Descr string	`json:"descr"`
 }
-type DeleteIVlan struct {
+type InterfaceVlanDelete struct {
 	Vlanif	string	 `json:"vlanif"`
 	Id      string   `json:"id"`
 }

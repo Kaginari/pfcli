@@ -1,73 +1,77 @@
 package lib
 
 import (
-	"bytes"
-	"crypto/tls"
 	"encoding/json"
-	"fmt"
-	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 	"gitlab.com/nt-factory/2021/admin/pfcli/models"
+	"io/ioutil"
 	"log"
-	"net/http"
 )
 
-func AddVlan(InetrfaceVLAN models.InterfaceVLAN)  {
-	jsonReq, _ := json.Marshal(InetrfaceVLAN)
-	res := functions.JsonOutput(jsonReq)
-	fmt.Println(res)
-	req, err := http.NewRequest("POST", ViperReadConfig().Host+"v1/interface/vlan", bytes.NewBuffer(jsonReq))
-	req.Header.Add("Authorization", ViperReadConfig().ClientId + " "+ViperReadConfig().ClientToken)
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+const INTERFACE_VLAN_API_URI = "v1/interface/vlan"
+type InterfaceVlanResponse struct {
+	Status  	string        `json:"status"`
+	Code    	int64         `json:"code"`
+	Return  	int64 `        json:"return"`
+	Message 	string        `json:"message"`
+	Date    	interface{}   `json:"data"`
+}
+type IinterfaceVlanService interface {
+	Create(model models.InterfaceVLAN) (InterfaceVlanResponse , error)
+	Delete(model models.InterfaceVlanDelete) (InterfaceVlanResponse , error)
+	List() (InterfaceVlanResponse , error)
+}
+type InterfaceVlanServiceImp struct {
+	client PfClient
+	path string
+}
+func InterfaceVlanConstruct(c PfClient) *InterfaceVlanServiceImp   {
+	return &InterfaceVlanServiceImp{
+		client: c,
+		path: INTERFACE_VLAN_API_URI,
 	}
-	client := &http.Client{Transport: tr}
-	resp, err := client.Do(req)
-
+}
+var _  IinterfaceVlanService=InterfaceVlanServiceImp{}
+var InterfaceVlan InterfaceVlanResponse
+func (i InterfaceVlanServiceImp) Create(model models.InterfaceVLAN) (InterfaceVlanResponse, error) {
+	body, _ := json.Marshal(model)
+	response , err := i.client.Post(i.path ,body)
+	if err != nil {
+		return InterfaceVlan , err
+	}
+	bytes, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		log.Fatal(err)
-
 	}
-
-	fmt.Println("response Status : ", resp.Status)
-	fmt.Println("response body : ", resp.Body)
-	fmt.Println("response Headers : ", resp.Header)
+	_ = json.Unmarshal(bytes , &InterfaceVlan)
+	// TODO PARSE RESPONSE AND RETURN THE STRUCT
+	return InterfaceVlan, nil
 }
 
-func DeleteVlan(DeleteInetrfaceVLAN models.DeleteIVlan){
-	jsonReq, _ := json.Marshal(DeleteInetrfaceVLAN)
-	res := functions.JsonOutput(jsonReq)
-	fmt.Println(res)
-	req, err := http.NewRequest("DELETE", ViperReadConfig().Host+"v1/interface/vlan", bytes.NewBuffer(jsonReq))
-	req.Header.Add("Authorization", ViperReadConfig().ClientId + " "+ViperReadConfig().ClientToken)
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+func (i InterfaceVlanServiceImp) Delete(model models.InterfaceVlanDelete) (InterfaceVlanResponse, error) {
+	body, _ := json.Marshal(model)
+	response , err := i.client.Delete(i.path ,body)
+	if err != nil {
+		return InterfaceVlan , err
 	}
-	client := &http.Client{Transport: tr}
-	resp, err := client.Do(req)
-
+	bytes, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		log.Fatal(err)
-
-
 	}
-
-	fmt.Println("response Status : ", resp.Status)
-	fmt.Println("response Headers : ", resp.Header)
-
+	_ = json.Unmarshal(bytes , &InterfaceVlan)
+	// TODO PARSE RESPONSE AND RETURN THE STRUCT
+	return InterfaceVlan, nil
 }
 
-func VlanList()  {
-	req, err := http.NewRequest("GET", ViperReadConfig().Host+"v1/interface/vlan", nil)
-	req.Header.Add("Authorization", ViperReadConfig().ClientId + " "+ViperReadConfig().ClientToken)
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+func (i InterfaceVlanServiceImp) List() (InterfaceVlanResponse, error) {
+	response , err := i.client.Get(i.path ,nil)
+	if err != nil {
+		return InterfaceVlan , err
 	}
-	client := &http.Client{Transport: tr}
-	resp, err := client.Do(req)
-
+	bytes, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("response Status : ", resp.Status)
-	fmt.Println("response Headers : ", resp.Header)
+	_ = json.Unmarshal(bytes , &InterfaceVlan)
+	// TODO PARSE RESPONSE AND RETURN THE STRUCT
+	return InterfaceVlan, nil
 }

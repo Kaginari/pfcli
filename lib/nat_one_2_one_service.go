@@ -1,74 +1,85 @@
 package lib
 
 import (
-	"bytes"
-	"crypto/tls"
 	"encoding/json"
-	"fmt"
-	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 	"gitlab.com/nt-factory/2021/admin/pfcli/models"
+	"io/ioutil"
 	"log"
-	"net/http"
 )
 
-func CreateNatOneToOne(natOneToOne models.NatOneToOne)  {
-	jsonReq, _ := json.Marshal(natOneToOne)
-	res := functions.JsonOutput(jsonReq)
-	fmt.Println(res)
-	req, err := http.NewRequest("POST", ViperReadConfig().Host+"v1/firewall/nat/one_to_one", bytes.NewBuffer(jsonReq))
-	req.Header.Add("Authorization", ViperReadConfig().ClientId + " "+ViperReadConfig().ClientToken)
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-	client := &http.Client{Transport: tr}
-	resp, err := client.Do(req)
+const NAT_ONE_2_ONE ="v1/firewall/nat/one_to_one"
 
-	if err != nil {
-		log.Fatal(err)
-
-	}
-
-	fmt.Println("response Status : ", resp.Status)
-	fmt.Println("response body : ", resp.Body)
-	fmt.Println("response Headers : ", resp.Header)
+type NatOneToOneResponse struct {
+	Status  	string        `json:"status"`
+	Code    	int64         `json:"code"`
+	Return  	int64 `        json:"return"`
+	Message 	string        `json:"message"`
+	Date    	interface{}   `json:"data"`
 }
-
-
-func DeleteNat(DeleteModel models.DeleteNatOneToOne)  {
-	jsonReq, _ := json.Marshal(DeleteModel)
-	res := functions.JsonOutput(jsonReq)
-	fmt.Println(res)
-	req, err := http.NewRequest("DELETE", ViperReadConfig().Host+"v1/firewall/nat/one_to_one", bytes.NewBuffer(jsonReq))
-	req.Header.Add("Authorization", ViperReadConfig().ClientId + " "+ViperReadConfig().ClientToken)
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-	client := &http.Client{Transport: tr}
-	resp, err := client.Do(req)
-
-	if err != nil {
-		log.Fatal(err)
-
-	}
-
-	fmt.Println("response Status : ", resp.Status)
-	fmt.Println("response body : ", resp.Body)
-	fmt.Println("response Headers : ", resp.Header)
+type NatOneToOneResponseList struct {
+	NatOneToOneResponse
+	Date    	[]interface{}   `json:"data"`
 }
-
-
-func NatList()  {
-	req, err := http.NewRequest("GET", ViperReadConfig().Host+"v1/firewall/nat/one_to_one", nil)
-	req.Header.Add("Authorization", ViperReadConfig().ClientId + " "+ViperReadConfig().ClientToken)
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+type InatOneToOneService interface {
+	Create(model models.NatOneToOne) (NatOneToOneResponse , error)
+	Delete(model models.DeleteNatOneToOne) (NatOneToOneResponse , error)
+	List() (NatOneToOneResponseList , error)
+}
+type NatOneToOneServiceImp struct {
+	client PfClient
+	path string
+}
+func NatOneToOneServiceConstruct(c PfClient)*NatOneToOneServiceImp  {
+	return &NatOneToOneServiceImp{
+		client: c,
+		path: NAT_ONE_2_ONE,
 	}
-	client := &http.Client{Transport: tr}
-	resp, err := client.Do(req)
+}
+var _ InatOneToOneService=NatOneToOneServiceImp{}
+var NatOneToOne NatOneToOneResponse
+var NatOneToOneList NatOneToOneResponseList
+func (n NatOneToOneServiceImp) Create(model models.NatOneToOne) (NatOneToOneResponse, error) {
+	body, _ := json.Marshal(model)
+	response , err := n.client.Post(n.path ,body)
+	if err != nil {
+		return NatOneToOne , err
+	}
+	bytes, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("response Status : ", resp.Status)
-	fmt.Println("response Body : ", resp.Body)
-	fmt.Println("response Headers : ", resp.Header)
+	_ = json.Unmarshal(bytes , &NatOneToOne)
+	// TODO PARSE RESPONSE AND RETURN THE STRUCT
+	return NatOneToOne, nil
 }
+
+func (n NatOneToOneServiceImp) Delete(model models.DeleteNatOneToOne) (NatOneToOneResponse, error) {
+	body, _ := json.Marshal(model)
+	response , err := n.client.Delete(n.path ,body)
+	if err != nil {
+		return NatOneToOne , err
+	}
+	bytes, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	_ = json.Unmarshal(bytes , &NatOneToOne)
+	// TODO PARSE RESPONSE AND RETURN THE STRUCT
+	return NatOneToOne, nil
+}
+
+func (n NatOneToOneServiceImp) List() (NatOneToOneResponseList, error) {
+	response , err := n.client.Get(n.path ,nil)
+	if err != nil {
+		return NatOneToOneList , err
+	}
+	bytes, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	_ = json.Unmarshal(bytes , &NatOneToOneList)
+	// TODO PARSE RESPONSE AND RETURN THE STRUCT
+	return NatOneToOneList, nil
+}
+
+

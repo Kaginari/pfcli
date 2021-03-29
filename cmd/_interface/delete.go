@@ -16,16 +16,29 @@ limitations under the License.
 package _interface
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/spf13/cobra"
-	"gitlab.com/nt-factory/2021/admin/pfcli/models"
+	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 	"gitlab.com/nt-factory/2021/admin/pfcli/lib"
+	"gitlab.com/nt-factory/2021/admin/pfcli/models"
 )
 
 // deleteCmd represents the delete command
 var DeleteCmd = &cobra.Command{
 	Use:   "delete",
 	Run: func(cmd *cobra.Command, args []string) {
-	lib.DeleteInterface(InterfaceDelete)
+		config:=lib.GetConfig()
+		pfClient:=config.Context()
+		service:=lib.InterfaceServiceConstruct(pfClient)
+		res,err:=service.Delete(InterfaceDelete)
+		if err!=nil {
+			fmt.Println("un error est occurred")
+		}
+		jsonRes, _ := json.Marshal(res)
+		rest := functions.JsonOutput(jsonRes)
+
+		fmt.Println(rest)
 	},
 }
 var InterfaceDelete models.InterfaceDelete

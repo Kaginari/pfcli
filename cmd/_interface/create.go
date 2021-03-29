@@ -16,7 +16,10 @@ limitations under the License.
 package _interface
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/spf13/cobra"
+	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 	"gitlab.com/nt-factory/2021/admin/pfcli/models"
 	"gitlab.com/nt-factory/2021/admin/pfcli/lib"
 )
@@ -25,20 +28,30 @@ import (
 var CreateCmd = &cobra.Command{
 	Use:   "create",
 	Run: func(cmd *cobra.Command, args []string) {
-		lib.CreateInterface(Interface_Model)
+		config:=lib.GetConfig()
+		pfClient:=config.Context()
+		service:=lib.InterfaceServiceConstruct(pfClient)
+		res,err:=service.Create(InterfaceModel)
+		if err!=nil{
+			fmt.Println("un error est occurred")
+		}
+		jsonRes, _ := json.Marshal(res)
+		rest := functions.JsonOutput(jsonRes)
+
+		fmt.Println(rest)
 	},
 }
 
 func init() {
 	createFlag()
 }
-var Interface_Model models.Interface
+var InterfaceModel models.Interface
 func createFlag()  {
 	pf := CreateCmd.PersistentFlags()
-	pf.StringVarP(&Interface_Model.If, "if", "i", "", models.InerfaceIfDescr)
-	pf.BoolVar(&Interface_Model.Enable, "enable",false, models.InerfaceEnableDescr)
-	pf.StringVarP(&Interface_Model.Descr, "descr", "d", "", models.Inerface_descr_Descr)
-	pf.StringVarP(&Interface_Model.Subnet, "subnet", "s", "", models.InerfaceSubnetDescr)
-	pf.StringVarP(&Interface_Model.Type, "type", "t", "", models.InerfaceTypeDescr)
-	pf.BoolVar(&Interface_Model.Blockbogons, "blockbogons",  true, models.InerfaceBlockbogonsDescr)
+	pf.StringVarP(&InterfaceModel.If, "if", "i", "", models.InerfaceIfDescr)
+	pf.BoolVar(&InterfaceModel.Enable, "enable",false, models.InerfaceEnableDescr)
+	pf.StringVarP(&InterfaceModel.Descr, "descr", "d", "", models.Inerface_descr_Descr)
+	pf.StringVarP(&InterfaceModel.Subnet, "subnet", "s", "", models.InerfaceSubnetDescr)
+	pf.StringVarP(&InterfaceModel.Type, "type", "t", "", models.InerfaceTypeDescr)
+	pf.BoolVar(&InterfaceModel.Blockbogons, "blockbogons",  true, models.InerfaceBlockbogonsDescr)
 }

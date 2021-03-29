@@ -16,7 +16,10 @@ limitations under the License.
 package _interface
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/spf13/cobra"
+	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 	"gitlab.com/nt-factory/2021/admin/pfcli/lib"
 )
 
@@ -26,7 +29,18 @@ var ApplyCmd = &cobra.Command{
 	Short: "Apply pending interface updates. This will apply the current configuration for each interface. This endpoint returns no data.",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		lib.ApplayInterface()
+		config := lib.GetConfig()
+		pfClient := config.Context()
+		service  := lib.InterfaceServiceConstruct(pfClient)
+		res , err := service.Apply()
+		if err != nil {
+			fmt.Println("un error est occurred")
+			// TODO FIN BETTER WAY TO HANDLE ERRORS
+		}
+		jsonRes, _ := json.Marshal(res)
+		rest := functions.JsonOutput(jsonRes)
+
+		fmt.Println(rest)
 	},
 }
 

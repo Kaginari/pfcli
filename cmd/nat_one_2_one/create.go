@@ -1,7 +1,10 @@
 package nat_one_2_one
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/spf13/cobra"
+	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 	"gitlab.com/nt-factory/2021/admin/pfcli/models"
 	"gitlab.com/nt-factory/2021/admin/pfcli/lib"
 )
@@ -10,11 +13,22 @@ var CreateCmd = &cobra.Command{
 	Use:   "create",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		lib.CreateNatOneToOne(natOneToOne)
+		config := lib.GetConfig()
+		pfClient := config.Context()
+		service  := lib.NatOneToOneServiceConstruct(pfClient)
+		res , err := service.Create(ModelnatOneToOne)
+		if err != nil {
+			fmt.Println("un error est occurred")
+			// TODO FIN BETTER WAY TO HANDLE ERRORS
+		}
+		jsonRes, _ := json.Marshal(res)
+		rest := functions.JsonOutput(jsonRes)
+
+		fmt.Println(rest)
 	},
 }
 
-var natOneToOne models.NatOneToOne
+var ModelnatOneToOne models.NatOneToOne
 
 func init() {
 	createFlags()
@@ -23,38 +37,16 @@ func init() {
 func createFlags()  {
 
 	pf := CreateCmd.PersistentFlags()
-	pf.StringVarP(&natOneToOne.Interface, "interface", "i","",models.NAT121InterfaceDesc )
-	pf.StringVarP(&natOneToOne.Source, "source", "s","", models.NAT121SourceDesc)
-	pf.StringVarP(&natOneToOne.Destination, "destination", "d","", models.NAT121DestinationDesc)
-	pf.StringVarP(&natOneToOne.External, "external", "e","", models.NAT121ExternalDesc)
-	pf.StringVarP(&natOneToOne.NatReflection, "nat-reflection", "n","", models.NAT121NatReflectionDesc)
-	pf.StringVar(&natOneToOne.Description, "description", "", models.NAT121DescriptionDesc)
-	pf.BoolVar(&natOneToOne.Disabled, "disabled", false, models.NAT121DisableDesc)
-	pf.BoolVar(&natOneToOne.NoBinat, "no-binat", false, models.NAT121NoBinatDesc)
-	pf.BoolVarP(&natOneToOne.Top, "top","t", false, models.NAT121TopDesc)
-	pf.BoolVarP(&natOneToOne.Apply, "apply","a", true, models.NAT121ApplyDesc)
-
-	//err := cobra.MarkFlagRequired(pf, "interface")
-	//if err != nil {
-	//	panic(err)
-	//}
-	//err = cobra.MarkFlagRequired(pf, "source")
-	//if err != nil {
-	//	fmt.Printf("dsdsdsd")
-	//	panic(err)
-	//}
-	//err = cobra.MarkFlagRequired(pf, "destination")
-	//if err != nil {
-	//	panic(err)
-	//}
-	//err =cobra.MarkFlagRequired(pf, "nat-reflection")
-	//if err != nil {
-	//	panic(err)
-	//}
-	//err = cobra.MarkFlagRequired(pf, "description")
-	//if err != nil {
-	//	panic(err)
-	//}
+	pf.StringVarP(&ModelnatOneToOne.Interface, "interface", "i","",models.NAT121InterfaceDesc )
+	pf.StringVarP(&ModelnatOneToOne.Source, "source", "s","", models.NAT121SourceDesc)
+	pf.StringVarP(&ModelnatOneToOne.Destination, "destination", "d","", models.NAT121DestinationDesc)
+	pf.StringVarP(&ModelnatOneToOne.External, "external", "e","", models.NAT121ExternalDesc)
+	pf.StringVarP(&ModelnatOneToOne.NatReflection, "nat-reflection", "n","", models.NAT121NatReflectionDesc)
+	pf.StringVar(&ModelnatOneToOne.Description, "description", "", models.NAT121DescriptionDesc)
+	pf.BoolVar(&ModelnatOneToOne.Disabled, "disabled", false, models.NAT121DisableDesc)
+	pf.BoolVar(&ModelnatOneToOne.NoBinat, "no-binat", false, models.NAT121NoBinatDesc)
+	pf.BoolVarP(&ModelnatOneToOne.Top, "top","t", false, models.NAT121TopDesc)
+	pf.BoolVarP(&ModelnatOneToOne.Apply, "apply","a", true, models.NAT121ApplyDesc)
 }
 
 

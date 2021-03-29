@@ -16,7 +16,10 @@ limitations under the License.
 package Virtual_IPs
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/spf13/cobra"
+	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 	"gitlab.com/nt-factory/2021/admin/pfcli/lib"
 )
 
@@ -25,7 +28,23 @@ var ListCmd = &cobra.Command{
 	Use:   "list",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		lib.VrirtualIPSList()
+		config := lib.GetConfig()
+		pfClient := config.Context()
+		service  := lib.VirtualIpsServiceConstruct(pfClient)
+		res , err := service.List()
+		if err != nil {
+			fmt.Println("un error est occurred")
+			// TODO FIN BETTER WAY TO HANDLE ERRORS
+		}
+		jsonRes, _ := json.Marshal(res)
+		rest := functions.JsonOutput(jsonRes)
+
+		fmt.Println(rest)
+		if len(res.Date)>0{
+			advbase, _ := functions.Find(res.Date[0], "advbase")
+
+			fmt.Println("advbase:::::::::::",advbase)}
+
 	},
 }
 

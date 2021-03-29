@@ -16,7 +16,10 @@ limitations under the License.
 package nat_one_2_one
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/spf13/cobra"
+	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 	"gitlab.com/nt-factory/2021/admin/pfcli/models"
 	"gitlab.com/nt-factory/2021/admin/pfcli/lib"
 )
@@ -25,7 +28,18 @@ import (
 var DeleteCmd = &cobra.Command{
 	Use:   "delete",
 	Run: func(cmd *cobra.Command, args []string) {
-		lib.DeleteNat(DeleteModel)
+		config := lib.GetConfig()
+		pfClient := config.Context()
+		service  := lib.NatOneToOneServiceConstruct(pfClient)
+		res , err := service.Delete(DeleteModel)
+		if err != nil {
+			fmt.Println("un error est occurred")
+			// TODO FIN BETTER WAY TO HANDLE ERRORS
+		}
+		jsonRes, _ := json.Marshal(res)
+		rest := functions.JsonOutput(jsonRes)
+
+		fmt.Println(rest)
 	},
 }
 
@@ -35,3 +49,4 @@ func init() {
 	pf.BoolVar(&DeleteModel.Apply, "apply",true, models.NAT121ApplyDesc)
 }
 var DeleteModel models.DeleteNatOneToOne
+//pfcli nat_one_to_one delete --id 0 --apply

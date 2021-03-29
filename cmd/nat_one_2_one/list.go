@@ -16,7 +16,10 @@ limitations under the License.
 package nat_one_2_one
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/spf13/cobra"
+	"gitlab.com/nt-factory/2021/admin/pfcli/functions"
 	"gitlab.com/nt-factory/2021/admin/pfcli/lib"
 )
 
@@ -31,7 +34,22 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		lib.NatList()
+		config := lib.GetConfig()
+		pfClient := config.Context()
+		service  := lib.NatOneToOneServiceConstruct(pfClient)
+		res , err := service.List()
+		if err != nil {
+			fmt.Println("un error est occurred")
+			// TODO FIN BETTER WAY TO HANDLE ERRORS
+		}
+		jsonRes, _ := json.Marshal(res)
+		rest := functions.JsonOutput(jsonRes)
+
+		fmt.Println(rest)
+		if len(res.Date)>0 {
+			desc, _ := functions.Find(res.Date[0], "descr")
+			fmt.Println("descr::::::::", desc)
+		}
 	},
 }
 
