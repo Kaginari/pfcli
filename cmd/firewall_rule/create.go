@@ -3,10 +3,10 @@ package firewall_rule
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/spf13/cobra"
 	"github.com/Kaginari/pfcli/functions"
 	"github.com/Kaginari/pfcli/lib"
 	"github.com/Kaginari/pfcli/models"
+	"github.com/spf13/cobra"
 )
 
 var firewallRule models.FirewallRule
