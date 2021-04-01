@@ -1,4 +1,4 @@
-project_name: example
+project_name: pfcli
 builds:
   - env: [CGO_ENABLED=0]
     goos:
@@ -17,6 +17,6 @@ publishers:
     # by specifying `packages` id here goreleaser will only use this publisher
     # with artifacts identified by this id
     ids:
-      - packages
+      - pfcli
     dir: "{{ dir .ArtifactPath }}"
     cmd: curl -F package=@{{ .ArtifactName }} https://{{ .Env.FURY_TOKEN }}@push.fury.io/kaginari/
