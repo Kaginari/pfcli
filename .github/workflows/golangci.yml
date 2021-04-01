@@ -8,15 +8,6 @@ on:
   pull_request:
 
 jobs:
-  go_lint:
-    name: golangci-lint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v2
-        with:
-          version: v1.30
 
   go_test:
     name: golang test
