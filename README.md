@@ -4,7 +4,7 @@
 $ sudo su
 $ echo 'deb [trusted=yes] https://apt.fury.io/kaginari/ /' >> /etc/apt/sources.list.d/fury.list
 $ apt update
-$ apt install pfcli
+$ apt install pfcli 
 ```
 
 ##### Init go module :
