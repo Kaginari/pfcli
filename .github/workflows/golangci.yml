@@ -1,0 +1,20 @@
+name: golangci
+on:
+  push:
+    tags:
+      - v*
+    branches:
+      - master
+  pull_request:
+
+jobs:
+
+  go_test:
+    name: golang test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Download Go modules
+        run: go mod download
+      - name: Run Test
+        run: go test ./...
