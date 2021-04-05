@@ -2,8 +2,8 @@ package lib
 
 import (
 	"fmt"
-	"github.com/spf13/viper"
 	"github.com/Kaginari/pfcli/models"
+	"github.com/spf13/viper"
 	"os"
 )
 
