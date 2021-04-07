@@ -17,21 +17,21 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/Kaginari/pfcli/cmd/Virtual_IPs"
+	"github.com/Kaginari/pfcli/cmd/VirtualIps"
 )
 
 // virtualIpsCmd represents the virtualIps command
 var VirtualIpsCmd = &cobra.Command{
-	Use:   "virtualIps",
+	Use:   "virtual_ips",
 	Short: "virtual Ips",
 }
 
 func init() {
 }
 func VirtualIpsAddCommands()  {
-	VirtualIpsCmd.AddCommand(Virtual_IPs.CreateCmd)
-	VirtualIpsCmd.AddCommand(Virtual_IPs.DeleteCmd)
-	VirtualIpsCmd.AddCommand(Virtual_IPs.ListCmd)
+	VirtualIpsCmd.AddCommand(VirtualIps.CreateCmd)
+	VirtualIpsCmd.AddCommand(VirtualIps.DeleteCmd)
+	VirtualIpsCmd.AddCommand(VirtualIps.ListCmd)
 
 
 }

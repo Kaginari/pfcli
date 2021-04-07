@@ -13,25 +13,26 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package nat_one_2_one
+package InterfaceVLAN
 
 import (
 	"encoding/json"
 	"fmt"
 	"github.com/Kaginari/pfcli/functions"
-	"github.com/spf13/cobra"
-	"github.com/Kaginari/pfcli/models"
 	"github.com/Kaginari/pfcli/lib"
+	"github.com/Kaginari/pfcli/models"
+	"github.com/spf13/cobra"
 )
 
-// deleteCmd represents the delete command
+// DeleteCmd represents the Delete command
 var DeleteCmd = &cobra.Command{
 	Use:   "delete",
+
 	Run: func(cmd *cobra.Command, args []string) {
 		config := lib.GetConfig()
-		pfClient := config.Context()
-		service  := lib.NatOneToOneServiceConstruct(pfClient)
-		res , err := service.Delete(DeleteModel)
+		pfClient:=config.Context()
+		service:=lib.InterfaceVlanConstruct(pfClient)
+		res,err:=service.Delete(modelDelete)
 		if err != nil {
 			fmt.Println("un error est occurred")
 			// TODO FIN BETTER WAY TO HANDLE ERRORS
@@ -42,11 +43,11 @@ var DeleteCmd = &cobra.Command{
 		fmt.Println(rest)
 	},
 }
-
+var modelDelete models.InterfaceVlanDelete
 func init() {
 	pf := DeleteCmd.PersistentFlags()
-	pf.StringVarP(&DeleteModel.Id, "id", "i", "", "Specify the rule tracker ID to delete")
-	pf.BoolVar(&DeleteModel.Apply, "apply",true, models.NAT121ApplyDesc)
+	pf.StringVarP(&modelDelete.Vlanif, "vlanif", "v", "", models.IvlanVlanifDesc)
+	pf.StringVarP(&modelDelete.Id, "id", "i", "", models.IvlanIdfDesc)
 }
-var DeleteModel models.DeleteNatOneToOne
-//pfcli nat_one_to_one delete --id 0 --apply
+
+//pfcli InterfaceVLAN delete --vlanif vmp1

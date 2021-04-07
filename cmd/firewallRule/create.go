@@ -1,4 +1,4 @@
-package firewall_rule
+package firewallRule
 
 import (
 	"encoding/json"

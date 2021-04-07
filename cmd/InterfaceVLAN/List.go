@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package firewall_rule
+package InterfaceVLAN
 
 import (
 	"encoding/json"
@@ -23,14 +23,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// listCmd represents the list command
+// ListCmd represents the List command
 var ListCmd = &cobra.Command{
 	Use:   "list",
 	Run: func(cmd *cobra.Command, args []string) {
 		config := lib.GetConfig()
-		pfClient:=config.Context()
-		service:=lib.FirewallRuleServiceConstruct(pfClient)
-		res,err:=service.List()
+		pfClient := config.Context()
+		service  := lib.InterfaceVlanConstruct(pfClient)
+		res , err := service.List()
 		if err != nil {
 			fmt.Println("un error est occurred")
 			// TODO FIN BETTER WAY TO HANDLE ERRORS
@@ -39,23 +39,8 @@ var ListCmd = &cobra.Command{
 		rest := functions.JsonOutput(jsonRes)
 
 		fmt.Println(rest)
-		if len(res.Date)>0 {
-			Type, _ := functions.Find(res.Date[0], "type")
-
-			fmt.Println("type:::::::::::", Type)
-			source, _ := functions.Find(res.Date[0], "source")
-			add, _ := functions.Find(source, "address")
-			fmt.Println("add:::::::::::", add)
-			Type1, _ := functions.Find(res.Date[1], "type")
-
-			fmt.Println("type:::::::::::", Type1)
-			source1, _ := functions.Find(res.Date[1], "source")
-			port1, _ := functions.Find(source1, "port")
-			fmt.Println("add:::::::::::", port1)
-		}
 	},
 }
 
 func init() {
-
 }

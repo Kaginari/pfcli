@@ -13,25 +13,24 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package firewall_rule
+package firewallRule
 
 import (
 	"encoding/json"
 	"fmt"
 	"github.com/Kaginari/pfcli/functions"
 	"github.com/Kaginari/pfcli/lib"
-	"github.com/Kaginari/pfcli/models"
 	"github.com/spf13/cobra"
 )
 
-// DeleteCmd represents the delete command
-var DeleteCmd = &cobra.Command{
-	Use:   "delete",
+// listCmd represents the list command
+var ListCmd = &cobra.Command{
+	Use:   "list",
 	Run: func(cmd *cobra.Command, args []string) {
 		config := lib.GetConfig()
 		pfClient:=config.Context()
 		service:=lib.FirewallRuleServiceConstruct(pfClient)
-		res,err:=service.Delete(DeleteModel)
+		res,err:=service.List()
 		if err != nil {
 			fmt.Println("un error est occurred")
 			// TODO FIN BETTER WAY TO HANDLE ERRORS
@@ -40,14 +39,23 @@ var DeleteCmd = &cobra.Command{
 		rest := functions.JsonOutput(jsonRes)
 
 		fmt.Println(rest)
+		if len(res.Date)>0 {
+			Type, _ := functions.Find(res.Date[0], "type")
+
+			fmt.Println("type:::::::::::", Type)
+			source, _ := functions.Find(res.Date[0], "source")
+			add, _ := functions.Find(source, "address")
+			fmt.Println("add:::::::::::", add)
+			Type1, _ := functions.Find(res.Date[1], "type")
+
+			fmt.Println("type:::::::::::", Type1)
+			source1, _ := functions.Find(res.Date[1], "source")
+			port1, _ := functions.Find(source1, "port")
+			fmt.Println("add:::::::::::", port1)
+		}
 	},
 }
 
-
-var DeleteModel models.DeleteFirewallRule
 func init() {
-	pf := DeleteCmd.PersistentFlags()
-	pf.StringVarP(&DeleteModel.Tracker, "tracker", "t", "", "Specify the rule tracker ID to delete")
-	pf.BoolVar(&DeleteModel.Apply, "apply",true, models.FWRApplyDesc)
+
 }
-//pfcli firewallRule delete --tracker 1616663222 --apply
