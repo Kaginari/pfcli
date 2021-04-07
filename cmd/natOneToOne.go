@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/Kaginari/pfcli/cmd/nat_one_2_one"
+	"github.com/Kaginari/pfcli/cmd/natOneToOne"
 )
 
 var NatOneToOneCmd = &cobra.Command{
@@ -17,8 +17,8 @@ func init() {
 }
 
 func NatOneToOneAddCommands()  {
-	NatOneToOneCmd.AddCommand(nat_one_2_one.CreateCmd)
-	NatOneToOneCmd.AddCommand(nat_one_2_one.DeleteCmd)
-	NatOneToOneCmd.AddCommand(nat_one_2_one.ListCmd)
+	NatOneToOneCmd.AddCommand(natOneToOne.CreateCmd)
+	NatOneToOneCmd.AddCommand(natOneToOne.DeleteCmd)
+	NatOneToOneCmd.AddCommand(natOneToOne.ListCmd)
 
 }

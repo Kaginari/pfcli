@@ -1,4 +1,4 @@
-package nat_one_2_one
+package natOneToOne
 
 import (
 	"encoding/json"

@@ -17,14 +17,14 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/Kaginari/pfcli/cmd/Interface_VLAN"
+	"github.com/Kaginari/pfcli/cmd/InterfaceVLAN"
 
 	"github.com/spf13/cobra"
 )
 
 // InterfaceVLANCmd represents the InterfaceVLAN command
 var InterfaceVLANCmd = &cobra.Command{
-	Use:   "InterfaceVLAN",
+	Use:   "interface_vlan",
 	Short: "VLAN interface.",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("InterfaceVLAN called")
@@ -34,9 +34,9 @@ var InterfaceVLANCmd = &cobra.Command{
 func init() {
 }
 func InterfaceVLANAddCommands(){
-	InterfaceVLANCmd.AddCommand(Interface_VLAN.CreateCmd)
-	InterfaceVLANCmd.AddCommand(Interface_VLAN.DeleteCmd)
-	InterfaceVLANCmd.AddCommand(Interface_VLAN.ListCmd)
+	InterfaceVLANCmd.AddCommand(InterfaceVLAN.CreateCmd)
+	InterfaceVLANCmd.AddCommand(InterfaceVLAN.DeleteCmd)
+	InterfaceVLANCmd.AddCommand(InterfaceVLAN.ListCmd)
 
 
 }
