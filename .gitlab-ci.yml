@@ -53,3 +53,5 @@ release:
     - git tag -a v1.0.1 -m "First release"
     - git push origin v1.0.1
     - goreleaser release
+  when:
+    - manual
