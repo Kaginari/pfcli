@@ -26,9 +26,9 @@ before_script:
   - git config --global user.email "bouagina.montassar@gmail.com"
   - git config --global user.name "ITMonta"
   ## Prepare go sources
-  #- mkdir -p /go/src/github.com/Kaginari/pfcli /go/src/_/builds/nt-factory/2021/admin 
-  #- cp -r $CI_PROJECT_DIR /go/src/github.com/Kaginari/pfcli
-  #- ln -s /go/src/github.com/Kaginari/pfcli /go/src/_/builds/nt-factory/2021/admin
+  - mkdir -p /go/src/github.com/Kaginari/pfcli /go/src/_/builds/nt-factory/2021/admin
+  - cp -r $CI_PROJECT_DIR /go/src/github.com/Kaginari/pfcli
+  - ln -s /go/src/github.com/Kaginari/pfcli /go/src/_/builds/nt-factory/2021/admin
   - go get -v -d ./...
 ################################################ PHASE 3 ################################################
 
