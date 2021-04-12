@@ -46,7 +46,10 @@ var DeleteCmd = &cobra.Command{
 var modelDelete models.InterfaceVlanDelete
 func init() {
 	pf := DeleteCmd.PersistentFlags()
+
 	pf.StringVarP(&modelDelete.Vlanif, "vlanif", "v", "", models.IvlanVlanifDesc)
+	DeleteCmd.MarkPersistentFlagRequired("vlanif")
+
 	pf.StringVarP(&modelDelete.Id, "id", "i", "", models.IvlanIdfDesc)
 }
 

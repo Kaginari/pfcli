@@ -32,7 +32,7 @@ func AddCommands() {
 
 	// Root Commands
 
-	rootCmd.AddCommand(versionCmd)
+	rootCmd.AddCommand(versionCmd())
 
 	rootCmd.AddCommand(NatOneToOneCmd)
 	NatOneToOneAddCommands()

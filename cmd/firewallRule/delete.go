@@ -48,6 +48,8 @@ var DeleteModel models.DeleteFirewallRule
 func init() {
 	pf := DeleteCmd.PersistentFlags()
 	pf.StringVarP(&DeleteModel.Tracker, "tracker", "t", "", "Specify the rule tracker ID to delete")
+	DeleteCmd.MarkPersistentFlagRequired("tracker")
+
 	pf.BoolVar(&DeleteModel.Apply, "apply",true, models.FWRApplyDesc)
 }
 //pfcli firewallRule delete --tracker 1616663222 --apply

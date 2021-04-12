@@ -22,19 +22,19 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
 	"github.com/Kaginari/pfcli/cmd/config"
+	"github.com/spf13/cobra"
 )
 
+var ConfigCmd =&cobra.Command{
+		Use:   "config",
+		Short: "return the config from the file $ HOME / .pfcli.yaml.",
 
-var ConfigCmd = &cobra.Command{
-	Use:   "config",
-	Short: "return the config from the file $ HOME / .pfcli.yaml.",
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Println("config called")
+		},
+	}
 
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("config called")
-	},
-}
 func init() {
 
 }

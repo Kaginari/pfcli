@@ -7,14 +7,16 @@ import (
 )
 
 // versionCmd represents the version command
-var versionCmd = &cobra.Command{
-	Use:   "version",
-	Short: "this command will return you CLI version",
+func versionCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:   "version",
+		Short: "this command will return you CLI version",
 
-	Run: func(cmd *cobra.Command, args []string) {
-		version:="0.0.1"
-		fmt.Println("pfcli version: ",version)
-	},
+		Run: func(cmd *cobra.Command, args []string) {
+			version := "0.0.1"
+			fmt.Println("pfcli version: ", version)
+		},
+	}
 }
 
 func init() {

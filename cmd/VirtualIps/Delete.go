@@ -46,4 +46,5 @@ var model models.DeleteVirtualIPS
 func init() {
 	pf := DeleteCmd.PersistentFlags()
 	pf.StringVarP(&model.Id, "id", "i", "", "Specify the virtual IP ID to delete\n")
+	DeleteCmd.MarkPersistentFlagRequired("id")
 }
