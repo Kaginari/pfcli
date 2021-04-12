@@ -19,7 +19,6 @@ stages:
   - build
   - release
 before_script:
-  - which git || ( apt-get update -y && apt-get install git -y )
   ##
   ## Optionally, if you will be using any Git commands, set the user name and
   ## and email.
@@ -27,9 +26,9 @@ before_script:
   - git config --global user.email "bouagina.montassar@gmail.com"
   - git config --global user.name "ITMonta"
   ## Prepare go sources
-  - mkdir -p /go/src/github.com/Kaginari /go/src/_/builds/nt-factory/2021/admin
+  - mkdir -p /go/src/github.com/Kaginari/pfcli /go/src/_/builds/nt-factory/2021/admin
   - cp -r $CI_PROJECT_DIR /go/src/github.com/Kaginari/pfcli
-  - ln -s /go/src/github.com/Kaginari /go/src/_/builds/nt-factory/2021/admin
+  - ln -s /go/src/github.com/Kaginari/pfcli /go/src/_/builds/nt-factory/2021/admin
   - go get -v -d ./...
 ################################################ PHASE 3 ################################################
 
@@ -37,27 +36,11 @@ before_script:
 unit_tests:
   stage: test
   script:
-    - go test -coverprofile=coverage.out ./...
-  artifacts:
-    paths:
-      - couverage.out
-    expire_in: 1 day
-sonar-analysis:
-  stage: quality
-  image: leppinger/golang-sonarqube-coverage:latest
-  before_script:
-    - echo "Performing sonar scan"
-  script:
-    - sonar-scanner -Dsonar.projectKey=pfcli -Dsonar.sources=. -Dsonar.host.url=https://sonar.allence-tunisie.com/ -Dsonar.login=$SONAR_TOKEN
-  needs:
-    - job: unit_tests
-      artifacts: true
+    - go test -v ./...
 build:
   stage: build
   script:
     - go build -i -v
-
-
 release:
   stage: release
   image:
@@ -70,5 +53,3 @@ release:
     - git tag -a v1.0.1 -m "First release"
     - git push origin v1.0.1
     - goreleaser release
-
-
