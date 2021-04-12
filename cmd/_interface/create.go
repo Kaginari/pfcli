@@ -48,10 +48,20 @@ func init() {
 var InterfaceModel models.Interface
 func createFlag()  {
 	pf := CreateCmd.PersistentFlags()
+
 	pf.StringVarP(&InterfaceModel.If, "if", "i", "", models.InerfaceIfDescr)
+	CreateCmd.MarkPersistentFlagRequired("if")
+
 	pf.BoolVar(&InterfaceModel.Enable, "enable",false, models.InerfaceEnableDescr)
+	CreateCmd.MarkPersistentFlagRequired("enable")
+
 	pf.StringVarP(&InterfaceModel.Descr, "descr", "d", "", models.Inerface_descr_Descr)
+	CreateCmd.MarkPersistentFlagRequired("descr")
+
 	pf.StringVarP(&InterfaceModel.Subnet, "subnet", "s", "", models.InerfaceSubnetDescr)
+	CreateCmd.MarkPersistentFlagRequired("subnet")
+
 	pf.StringVarP(&InterfaceModel.Type, "type", "t", "", models.InerfaceTypeDescr)
+
 	pf.BoolVar(&InterfaceModel.Blockbogons, "blockbogons",  true, models.InerfaceBlockbogonsDescr)
 }

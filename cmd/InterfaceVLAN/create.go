@@ -47,9 +47,16 @@ var CreateCmd = &cobra.Command{
 func init() {
 	pf := CreateCmd.PersistentFlags()
 	pf.StringVarP(&model.If, "if", "i", "", models.IvlanIfDesc)
+	CreateCmd.MarkPersistentFlagRequired("if")
+
 	pf.StringVarP(&model.Tag, "tag", "t", "", models.IvlanTagDesc)
+	CreateCmd.MarkPersistentFlagRequired("tag")
+
 	pf.StringVarP(&model.Pcp, "pcp", "p", "", models.IvlanPcpDesc)
+
 	pf.StringVarP(&model.Descr, "descr", "d", "", models.IvlanDescrDesc)
+	CreateCmd.MarkPersistentFlagRequired("descr")
+
 }
 
 

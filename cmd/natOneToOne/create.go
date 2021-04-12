@@ -1,9 +1,7 @@
 package natOneToOne
 
 import (
-	"encoding/json"
 	"fmt"
-	"github.com/Kaginari/pfcli/functions"
 	"github.com/Kaginari/pfcli/lib"
 	"github.com/Kaginari/pfcli/models"
 	"github.com/spf13/cobra"
@@ -12,19 +10,20 @@ import (
 var CreateCmd = &cobra.Command{
 	Use:   "create",
 
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error{
 		config := lib.GetConfig()
 		pfClient := config.Context()
 		service  := lib.NatOneToOneServiceConstruct(pfClient)
-		res , err := service.Create(ModelnatOneToOne)
+		_ , err := service.Create(ModelnatOneToOne)
 		if err != nil {
 			fmt.Println("un error est occurred")
+			return err
 			// TODO FIN BETTER WAY TO HANDLE ERRORS
 		}
-		jsonRes, _ := json.Marshal(res)
-		rest := functions.JsonOutput(jsonRes)
+		//jsonRes, _ := json.Marshal(res)
+		//rest := functions.JsonOutput(jsonRes)
 
-		fmt.Println(rest)
+		return nil
 	},
 }
 
@@ -37,10 +36,18 @@ func init() {
 func createFlags()  {
 
 	pf := CreateCmd.PersistentFlags()
-	pf.StringVarP(&ModelnatOneToOne.Interface, "interface", "i","",models.NAT121InterfaceDesc )
+	pf.StringVarP(&ModelnatOneToOne.Interface, "interface", "i","LAN",models.NAT121InterfaceDesc )
+	CreateCmd.MarkPersistentFlagRequired("interface")
+
 	pf.StringVarP(&ModelnatOneToOne.Source, "source", "s","", models.NAT121SourceDesc)
+	CreateCmd.MarkPersistentFlagRequired("source")
+
 	pf.StringVarP(&ModelnatOneToOne.Destination, "destination", "d","", models.NAT121DestinationDesc)
+	CreateCmd.MarkPersistentFlagRequired("destination")
+
 	pf.StringVarP(&ModelnatOneToOne.External, "external", "e","", models.NAT121ExternalDesc)
+	CreateCmd.MarkPersistentFlagRequired("external")
+
 	pf.StringVarP(&ModelnatOneToOne.NatReflection, "nat-reflection", "n","", models.NAT121NatReflectionDesc)
 	pf.StringVar(&ModelnatOneToOne.Description, "description", "", models.NAT121DescriptionDesc)
 	pf.BoolVar(&ModelnatOneToOne.Disabled, "disabled", false, models.NAT121DisableDesc)

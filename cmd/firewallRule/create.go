@@ -40,14 +40,33 @@ func init()  {
 func createFlags() {
 	pf := CreateCmd.PersistentFlags()
 	pf.StringVarP(&firewallRule.Interface, "interface", "i", "", models.FWRInterfaceDesc)
+	CreateCmd.MarkPersistentFlagRequired("interface")
+
 	pf.StringVarP(&firewallRule.Type, "type", "t", "", models.FWRTypeDesc)
+	CreateCmd.MarkPersistentFlagRequired("type")
+
 	pf.StringVarP(&firewallRule.Protocol, "protocol", "p", "", models.FWRProtocolDesc)
+	CreateCmd.MarkPersistentFlagRequired("protocol")
+
 	pf.StringVar(&firewallRule.IPProtocol, "ipprotocol", "", models.FWRIPProtocolDesc)
+	CreateCmd.MarkPersistentFlagRequired("ipprotocol")
+
 	pf.StringVar(&firewallRule.IMCPType, "icmptype", "", models.FWRIMCPTypeDesc)
+	CreateCmd.MarkPersistentFlagRequired("icmptype")
+
 	pf.StringVar(&firewallRule.Source, "src", "", models.FWRSourceDesc)
+	CreateCmd.MarkPersistentFlagRequired("src")
+
 	pf.StringVar(&firewallRule.Destination, "dst", "", models.FWRDestinationDesc)
+	CreateCmd.MarkPersistentFlagRequired("dst")
+
 	pf.IntVar(&firewallRule.SourcePort, "srcport", 0 , models.FWRSourcePortDesc)
+	CreateCmd.MarkPersistentFlagRequired("srcport")
+
 	pf.IntVar(&firewallRule.DestinationPort, "dstport", 0, models.FWRDestinationPortDesc)
+	CreateCmd.MarkPersistentFlagRequired("dstport")
+
+
 	//pf.StringVarP(&firewallRule.Gateway, "gateway","g","WANGW_2", models.FWRGatewayDesc)
 	pf.BoolVar(&firewallRule.Disabled, "disabled",false, models.FWRDisabledDesc)
 	pf.StringVar(&firewallRule.Description, "descr","", models.FWRDescriptionDesc)
