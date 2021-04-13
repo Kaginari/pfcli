@@ -27,7 +27,7 @@ before_script:
   - git config --global user.name "ITMonta"
   ## Prepare go sources
   - mkdir -p /go/src/github.com/Kaginari /go/src/_/builds/nt-factory/2021/admin
-  - cp -r $CI_PROJECT_DIR /go/src/github.com/Kaginari/pfcli
+  - cp -r $CI_PROJECT_DIR /go/src/_/builds/nt-factory/2021/admin
   - ln -s /go/src/github.com/Kaginari /go/src/_/builds/nt-factory/2021/admin
   - go get -v -d ./...
 ################################################ PHASE 3 ################################################
@@ -53,5 +53,4 @@ release:
     - git tag -a v1.0.1 -m "First release"
     - git push origin v1.0.1
     - goreleaser release
-  when:
-    - manual
+  when: manual
