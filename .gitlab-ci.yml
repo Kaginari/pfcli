@@ -26,9 +26,9 @@ before_script:
   - git config --global user.email "bouagina.montassar@gmail.com"
   - git config --global user.name "ITMonta"
   ## Prepare go sources
-  - mkdir -p /go/src/gitlab.com/nt-factory/2021/admin /go/src/_/builds/nt-factory/2021/admin
+  - mkdir -p /go/src/github.com/Kaginari /go/src/_/builds/nt-factory/2021/admin
   - cp -r $CI_PROJECT_DIR /go/src/github.com/Kaginari/pfcli
-  - ln -s /go/src/gitlab.com/nt-factory/2021/admin /go/src/_/builds/nt-factory/2021/admin
+  - ln -s /go/src/github.com/Kaginari /go/src/_/builds/nt-factory/2021/admin
   - go get -v -d ./...
 ################################################ PHASE 3 ################################################
 
@@ -41,6 +41,15 @@ build:
   stage: build
   script:
     - go build -i -v
+sonar-analysis:
+  stage: quality
+  image: leppinger/golang-sonarqube-coverage:latest
+  script:
+    - mv /builds $GOPATH/src/gitlab.com
+    - cd $GOPATH/src/gitlab.com/user/myproject
+    - go test -coverprofile=coverage.out ./...
+    - sonar-scanner -Dsonar.projectKey=pfcli -Dsonar.sources=. -Dsonar.host.url=https://sonar.allence-tunisie.com/ -Dsonar.login=$SONAR_TOKEN
+
 release:
   stage: release
   image:
@@ -53,3 +62,4 @@ release:
     - git tag -a v1.0.1 -m "First release"
     - git push origin v1.0.1
     - goreleaser release
+
