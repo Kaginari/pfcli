@@ -37,17 +37,26 @@ before_script:
 unit_tests:
   stage: test
   script:
-    - go test -v ./...
+    - go test -coverprofile=coverage.out ./...
+  artifacts:
+    paths:
+      - couverage.out
+    expire_in: 1 day
+sonar-analysis:
+  stage: quality
+  image: leppinger/golang-sonarqube-coverage:latest
+  before_script:
+    - echo "Performing sonar scan"
+  script:
+    - sonar-scanner -Dsonar.projectKey=pfcli -Dsonar.sources=. -Dsonar.host.url=https://sonar.allence-tunisie.com/ -Dsonar.login=$SONAR_TOKEN
+  needs:
+    - job: unit_tests
+      artifacts: true
 build:
   stage: build
   script:
     - go build -i -v
-sonar-analysis:
-  stage: quality
-  image: leppinger/golang-sonarqube-coverage:latest
-  script:
-    - go test -coverprofile=coverage.out ./...
-    - sonar-scanner -Dsonar.projectKey=pfcli -Dsonar.sources=. -Dsonar.host.url=https://sonar.allence-tunisie.com/ -Dsonar.login=$SONAR_TOKEN
+
 
 release:
   stage: release
