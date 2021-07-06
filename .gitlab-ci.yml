@@ -48,6 +48,7 @@ sonar-analysis:
     - mkdir -p /go/src/github.com/Kaginari /go/src/_/builds/nt-factory/2021/admin
     - cp -r $CI_PROJECT_DIR /go/src/github.com/Kaginari/pfcli
     - ln -s /go/src/github.com/Kaginari /go/src/_/builds/nt-factory/2021/admin
+    - go get -v -d ./...
   script:
     - go test -coverprofile=coverage.out ./...
     - sonar-scanner -Dsonar.projectKey=pfcli -Dsonar.sources=. -Dsonar.host.url=https://sonar.allence-tunisie.com/ -Dsonar.login=$SONAR_TOKEN
