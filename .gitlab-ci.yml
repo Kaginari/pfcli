@@ -44,9 +44,11 @@ build:
 sonar-analysis:
   stage: quality
   image: leppinger/golang-sonarqube-coverage:latest
+  before_script:
+    - mkdir -p /go/src/github.com/Kaginari /go/src/_/builds/nt-factory/2021/admin
+    - cp -r $CI_PROJECT_DIR /go/src/github.com/Kaginari/pfcli
+    - ln -s /go/src/github.com/Kaginari /go/src/_/builds/nt-factory/2021/admin
   script:
-    - mv /builds $GOPATH/src/gitlab.com
-    - cd $GOPATH/src/gitlab.com/user/myproject
     - go test -coverprofile=coverage.out ./...
     - sonar-scanner -Dsonar.projectKey=pfcli -Dsonar.sources=. -Dsonar.host.url=https://sonar.allence-tunisie.com/ -Dsonar.login=$SONAR_TOKEN
 
