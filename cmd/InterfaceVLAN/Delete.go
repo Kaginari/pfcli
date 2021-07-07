@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package firewall_rule
+package InterfaceVLAN
 
 import (
 	"encoding/json"
@@ -24,14 +24,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// DeleteCmd represents the delete command
+// DeleteCmd represents the Delete command
 var DeleteCmd = &cobra.Command{
 	Use:   "delete",
+
 	Run: func(cmd *cobra.Command, args []string) {
 		config := lib.GetConfig()
 		pfClient:=config.Context()
-		service:=lib.FirewallRuleServiceConstruct(pfClient)
-		res,err:=service.Delete(DeleteModel)
+		service:=lib.InterfaceVlanConstruct(pfClient)
+		res,err:=service.Delete(modelDelete)
 		if err != nil {
 			fmt.Println("un error est occurred")
 			// TODO FIN BETTER WAY TO HANDLE ERRORS
@@ -42,12 +43,14 @@ var DeleteCmd = &cobra.Command{
 		fmt.Println(rest)
 	},
 }
-
-
-var DeleteModel models.DeleteFirewallRule
+var modelDelete models.InterfaceVlanDelete
 func init() {
 	pf := DeleteCmd.PersistentFlags()
-	pf.StringVarP(&DeleteModel.Tracker, "tracker", "t", "", "Specify the rule tracker ID to delete")
-	pf.BoolVar(&DeleteModel.Apply, "apply",true, models.FWRApplyDesc)
+
+	pf.StringVarP(&modelDelete.Vlanif, "vlanif", "v", "", models.IvlanVlanifDesc)
+	DeleteCmd.MarkPersistentFlagRequired("vlanif")
+
+	pf.StringVarP(&modelDelete.Id, "id", "i", "", models.IvlanIdfDesc)
 }
-//pfcli firewallRule delete --tracker 1616663222 --apply
+
+//pfcli InterfaceVLAN delete --vlanif vmp1

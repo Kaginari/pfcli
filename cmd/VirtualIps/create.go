@@ -1,4 +1,4 @@
-/*
+	/*
 Copyright © 2021 NAME HERE <EMAIL ADDRESS>
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package Virtual_IPs
+package VirtualIps
 
 import (
 	"encoding/json"
@@ -50,15 +50,29 @@ func init() {
 var VirtualIPS models.Virtual_IPS
 func createFlags()  {
 	pf := CreateCmd.PersistentFlags()
+
 	pf.StringVarP(&VirtualIPS.Mode, "mode", "m","",models.VertualIPS_Mode_Desc )
+		CreateCmd.MarkPersistentFlagRequired("mode")
+
 	pf.StringVarP(&VirtualIPS.Interface, "interface", "i","",models.VertualIPS_Interface_Desc )
+		CreateCmd.MarkPersistentFlagRequired("interface")
+
 	pf.StringVarP(&VirtualIPS.Subnet, "subnet", "s","",models.VertualIPS_Subnet_Desc )
+		CreateCmd.MarkPersistentFlagRequired("subnet")
+
 	pf.StringVarP(&VirtualIPS.Descr, "descr", "d","",models.VertualIPS_Mode_Desc )
+
 	pf.BoolVarP(&VirtualIPS.Noexpand, "noexpand", "n",false,models.VertualIPS_Noexpand_Desc )
+
 	pf.StringVarP(&VirtualIPS.Vhid, "vhid", "v","",models.VertualIPS_Vhid_Desc )
+
 	pf.StringVar(&VirtualIPS.Advbase, "advbase","",models.VertualIPS_Advbase_Desc )
+
 	pf.StringVar(&VirtualIPS.Advskew, "advskew","",models.VertualIPS_Advskew_Desc )
+
 	pf.StringVarP(&VirtualIPS.Password, "password", "p","",models.VertualIPS_Password_Desc )
+		CreateCmd.MarkPersistentFlagRequired("password")
+
 }
 
 //pfcli virtualIps create --mode carp --interface WAN --subnet 172.16.77.239/32 --password testpass --descr This_is_a_virtual_IP_added_via_pfSense_API

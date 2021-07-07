@@ -45,4 +45,5 @@ var InterfaceDelete models.InterfaceDelete
 func init() {
 	pf := DeleteCmd.PersistentFlags()
 	pf.StringVarP(&InterfaceDelete.If, "if", "i", "", models.Inerface_ifDelete_Descr)
+	CreateCmd.MarkPersistentFlagRequired("if")
 }

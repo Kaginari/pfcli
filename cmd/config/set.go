@@ -17,12 +17,13 @@ package config
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
-	"github.com/Kaginari/pfcli/models"
 	"github.com/Kaginari/pfcli/lib"
+	"github.com/Kaginari/pfcli/models"
+	"github.com/spf13/cobra"
 )
 
 // addCmd represents the add command
+
 var SetCmd = &cobra.Command{
 	Use:   "set",
 	Run: func(cmd *cobra.Command, args []string) {

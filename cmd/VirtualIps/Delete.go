@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package Virtual_IPs
+package VirtualIps
 
 import (
 	"encoding/json"
@@ -46,4 +46,5 @@ var model models.DeleteVirtualIPS
 func init() {
 	pf := DeleteCmd.PersistentFlags()
 	pf.StringVarP(&model.Id, "id", "i", "", "Specify the virtual IP ID to delete\n")
+	DeleteCmd.MarkPersistentFlagRequired("id")
 }

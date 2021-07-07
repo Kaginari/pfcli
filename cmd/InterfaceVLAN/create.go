@@ -13,31 +13,26 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package nat_one_2_one
+package InterfaceVLAN
 
 import (
 	"encoding/json"
 	"fmt"
 	"github.com/Kaginari/pfcli/functions"
 	"github.com/Kaginari/pfcli/lib"
+	"github.com/Kaginari/pfcli/models"
 	"github.com/spf13/cobra"
 )
 
-// listCmd represents the list command
-var ListCmd = &cobra.Command{
-	Use:   "list",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+// createCmd represents the create command
+var CreateCmd = &cobra.Command{
+	Use:   "create",
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		config := lib.GetConfig()
 		pfClient := config.Context()
-		service  := lib.NatOneToOneServiceConstruct(pfClient)
-		res , err := service.List()
+		service  := lib.InterfaceVlanConstruct(pfClient)
+		res , err := service.Create(model)
 		if err != nil {
 			fmt.Println("un error est occurred")
 			// TODO FIN BETTER WAY TO HANDLE ERRORS
@@ -46,13 +41,23 @@ to quickly create a Cobra application.`,
 		rest := functions.JsonOutput(jsonRes)
 
 		fmt.Println(rest)
-		if len(res.Date)>0 {
-			desc, _ := functions.Find(res.Date[0], "descr")
-			fmt.Println("descr::::::::", desc)
-		}
 	},
 }
-
+ var model models.InterfaceVLAN
 func init() {
+	pf := CreateCmd.PersistentFlags()
+	pf.StringVarP(&model.If, "if", "i", "", models.IvlanIfDesc)
+	CreateCmd.MarkPersistentFlagRequired("if")
+
+	pf.StringVarP(&model.Tag, "tag", "t", "", models.IvlanTagDesc)
+	CreateCmd.MarkPersistentFlagRequired("tag")
+
+	pf.StringVarP(&model.Pcp, "pcp", "p", "", models.IvlanPcpDesc)
+
+	pf.StringVarP(&model.Descr, "descr", "d", "", models.IvlanDescrDesc)
+	CreateCmd.MarkPersistentFlagRequired("descr")
 
 }
+
+
+//pfcli InterfaceVLAN create --if 172.5.6.3 --tag 1 --descr newVlan

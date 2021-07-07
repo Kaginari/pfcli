@@ -17,12 +17,12 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/Kaginari/pfcli/cmd/firewall_rule"
+	"github.com/Kaginari/pfcli/cmd/firewallRule"
 )
 
 // firewallRuleCmd represents the firewallRule command
 var FirewallRuleCmd = &cobra.Command{
-	Use:   "firewallRule",
+	Use:   "firewall_rule",
 	Short: "firewall rule",
 }
 
@@ -30,9 +30,9 @@ func init() {
 
 }
 func FirewallRuleAddCommands()  {
-	FirewallRuleCmd.AddCommand(firewall_rule.CreateCmd)
-	FirewallRuleCmd.AddCommand(firewall_rule.DeleteCmd)
-	FirewallRuleCmd.AddCommand(firewall_rule.ListCmd)
+	FirewallRuleCmd.AddCommand(firewallRule.CreateCmd)
+	FirewallRuleCmd.AddCommand(firewallRule.DeleteCmd)
+	FirewallRuleCmd.AddCommand(firewallRule.ListCmd)
 
 
 }

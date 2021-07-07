@@ -13,24 +13,25 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package Interface_VLAN
+package firewallRule
 
 import (
 	"encoding/json"
 	"fmt"
 	"github.com/Kaginari/pfcli/functions"
 	"github.com/Kaginari/pfcli/lib"
+	"github.com/Kaginari/pfcli/models"
 	"github.com/spf13/cobra"
 )
 
-// ListCmd represents the List command
-var ListCmd = &cobra.Command{
-	Use:   "list",
+// DeleteCmd represents the delete command
+var DeleteCmd = &cobra.Command{
+	Use:   "delete",
 	Run: func(cmd *cobra.Command, args []string) {
 		config := lib.GetConfig()
-		pfClient := config.Context()
-		service  := lib.InterfaceVlanConstruct(pfClient)
-		res , err := service.List()
+		pfClient:=config.Context()
+		service:=lib.FirewallRuleServiceConstruct(pfClient)
+		res,err:=service.Delete(DeleteModel)
 		if err != nil {
 			fmt.Println("un error est occurred")
 			// TODO FIN BETTER WAY TO HANDLE ERRORS
@@ -42,5 +43,13 @@ var ListCmd = &cobra.Command{
 	},
 }
 
+
+var DeleteModel models.DeleteFirewallRule
 func init() {
+	pf := DeleteCmd.PersistentFlags()
+	pf.StringVarP(&DeleteModel.Tracker, "tracker", "t", "", "Specify the rule tracker ID to delete")
+	DeleteCmd.MarkPersistentFlagRequired("tracker")
+
+	pf.BoolVar(&DeleteModel.Apply, "apply",true, models.FWRApplyDesc)
 }
+//pfcli firewallRule delete --tracker 1616663222 --apply

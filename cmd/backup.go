@@ -13,49 +13,38 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package firewall_rule
+package cmd
 
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/Kaginari/pfcli/functions"
 	"github.com/Kaginari/pfcli/lib"
+	"io/ioutil"
+	"os"
+
 	"github.com/spf13/cobra"
 )
 
-// listCmd represents the list command
-var ListCmd = &cobra.Command{
-	Use:   "list",
+// backupCmd represents the backup command
+var backupCmd = &cobra.Command{
+	Use:   "backup",
+	Short: "A brief description of your command",
 	Run: func(cmd *cobra.Command, args []string) {
 		config := lib.GetConfig()
 		pfClient:=config.Context()
-		service:=lib.FirewallRuleServiceConstruct(pfClient)
-		res,err:=service.List()
+		service:=lib.BackupServiceConstruct(pfClient)
+		res , err := service.Save()
 		if err != nil {
 			fmt.Println("un error est occurred")
 			// TODO FIN BETTER WAY TO HANDLE ERRORS
 		}
-		jsonRes, _ := json.Marshal(res)
-		rest := functions.JsonOutput(jsonRes)
+		jsonRes, _ := json.Marshal(res.Date)
+		ioutil.WriteFile("big_marhsall.json", jsonRes, os.ModePerm)
 
-		fmt.Println(rest)
-		if len(res.Date)>0 {
-			Type, _ := functions.Find(res.Date[0], "type")
-
-			fmt.Println("type:::::::::::", Type)
-			source, _ := functions.Find(res.Date[0], "source")
-			add, _ := functions.Find(source, "address")
-			fmt.Println("add:::::::::::", add)
-			Type1, _ := functions.Find(res.Date[1], "type")
-
-			fmt.Println("type:::::::::::", Type1)
-			source1, _ := functions.Find(res.Date[1], "source")
-			port1, _ := functions.Find(source1, "port")
-			fmt.Println("add:::::::::::", port1)
-		}
+		fmt.Println("done")
 	},
 }
 
 func init() {
-
+	rootCmd.AddCommand(backupCmd)
 }
