@@ -40,7 +40,7 @@ unit_tests:
     - go test -coverprofile=coverage.out ./...
   artifacts:
     paths:
-      - couverage.out
+      - coverage.out
     expire_in: 1 day
 sonar-analysis:
   stage: quality
@@ -48,7 +48,7 @@ sonar-analysis:
   before_script:
     - echo "Performing sonar scan"
   script:
-    - sonar-scanner -Dsonar.projectKey=pfcli -Dsonar.sources=. -Dsonar.host.url=http://sonarqube.kaginari.com:9000/ -Dsonar.login=$SONAR_TOKEN
+    - sonar-scanner -Dsonar.login=$SONAR_TOKEN
   needs:
     - job: unit_tests
       artifacts: true
