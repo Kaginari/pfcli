@@ -63,12 +63,7 @@ release:
   image:
     name: goreleaser/goreleaser:latest
     entrypoint: [""]
-  variables:
-    GITLAB_TOKEN: "ewK3kecg7tg44Bq-Uwu6"
   script:
     - git remote set-url origin https://ITMonta:$GITLAB_TOKEN@gitlab.com/$CI_PROJECT_PATH
-    - git tag -a v1.0.1 -m "First release"
-    - git push origin v1.0.1
+    - ./release.sh patch
     - goreleaser release
-
-
