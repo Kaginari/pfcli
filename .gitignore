@@ -2,4 +2,5 @@
 **/.terraform
 **/*.iml
 **/*.tfstate
-
+**/coverage.out
+**/go.sum
