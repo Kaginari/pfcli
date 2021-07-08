@@ -65,5 +65,6 @@ release:
     entrypoint: [""]
   script:
     - git remote set-url origin https://ITMonta:$GITLAB_TOKEN@gitlab.com/$CI_PROJECT_PATH
-    - ./release.sh patch
+    - ./release.sh -v patch
     - goreleaser release
+  when: manual
