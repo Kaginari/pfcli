@@ -58,7 +58,7 @@ build:
     - go build -i -v
 
 
-release:
+release-patch:
   stage: release
   image:
     name: goreleaser/goreleaser:latest
@@ -66,6 +66,32 @@ release:
   script:
     - git remote set-url origin https://ITMonta:$GITLAB_TOKEN@gitlab.com/$CI_PROJECT_PATH
     - ./release.sh -v patch
+  when: manual
+  only:
+    refs:
+      - master
+
+release-minor:
+  stage: release
+  image:
+    name: goreleaser/goreleaser:latest
+    entrypoint: [""]
+  script:
+    - git remote set-url origin https://ITMonta:$GITLAB_TOKEN@gitlab.com/$CI_PROJECT_PATH
+    - ./release.sh -v minor
+  when: manual
+  only:
+    refs:
+      - master
+
+release-major:
+  stage: release
+  image:
+    name: goreleaser/goreleaser:latest
+    entrypoint: [""]
+  script:
+    - git remote set-url origin https://ITMonta:$GITLAB_TOKEN@gitlab.com/$CI_PROJECT_PATH
+    - ./release.sh -v major
   when: manual
   only:
     refs:
