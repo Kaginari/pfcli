@@ -13,7 +13,7 @@ nfpms:
     file_name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     # Your app's maintainer (probably you).
     # Default is empty.
-    maintainer: Monta <bouagina.montassar@gmail.com.com>
+    maintainer: Monta <bouagina.montassar@gmail.com>
     # Your app's license.
     # Default is empty.
     license: Apache 2.0

@@ -66,8 +66,6 @@ release:
   script:
     - git remote set-url origin https://ITMonta:$GITLAB_TOKEN@gitlab.com/$CI_PROJECT_PATH
     - ./release.sh -v patch
-    - git stash
-    - goreleaser release
   when: manual
   only:
     refs:
