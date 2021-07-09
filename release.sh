@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # https://github.com/unegma/bash-functions/blob/main/update.sh
 
 VERSION=""
