@@ -13,7 +13,7 @@ func versionCmd() *cobra.Command {
 		Short: "this command will return you CLI version",
 
 		Run: func(cmd *cobra.Command, args []string) {
-			version := "0.0.1"
+			version := "1.0.4"
 			fmt.Println("pfcli version: ", version)
 		},
 	}
