@@ -37,6 +37,7 @@ func init()  {
 	createFlags()
 }
 
+
 func createFlags() {
 	pf := CreateCmd.PersistentFlags()
 	pf.StringVarP(&firewallRule.Interface, "interface", "i", "", models.FWRInterfaceDesc)
